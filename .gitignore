@@ -1,0 +1,16 @@
+# .vs
+/.vs/*
+
+# cmake
+/cmake/*
+
+#includes
+/includes/*
+
+# lib
+/lib/glfw3.lib
+
+# out
+/out/*
+
+stb_image.*
