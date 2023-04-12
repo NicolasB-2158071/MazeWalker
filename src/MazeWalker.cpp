@@ -2,13 +2,6 @@
 
 #include <iostream>
 
-// TEMP
-#include "Shaders/Shader.h"
-#include "VertexBuffer/VertexBuffer.h"
-#include "VertexBuffer/VertexBufferLayout.h"
-#include "VertexArray/VertexArray.h"
-#include "Textures/Texture.h"
-
 MazeWalker::MazeWalker(int windowWidth, int windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager},
 m_camera{ windowWidth , windowHeight, &m_eventManager}, m_running{ true }, m_deltaTime{}, m_lastFrameTime{}, m_focus{false}
 {
@@ -17,102 +10,30 @@ m_camera{ windowWidth , windowHeight, &m_eventManager}, m_running{ true }, m_del
         std::cout << "Failed to initialize GLAD" << std::endl;
         m_running = false;
     }
+    // Maze uit file gelezen worden
     initApplicationInputs();
 }
 
 void MazeWalker::run()
 {
-    float vertices[] = {
-       -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-       -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-       -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-       -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-       -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-       -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-       -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-       -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-       -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-       -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-       -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-       -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-       -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-       -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-       -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
-
-    Shader shader{
-        "src/Shaders/MyVShader.vs",
-        "src/Shaders/MyFShader.fs"
-    };
-
-    VertexBuffer VBO{ vertices, sizeof(vertices) };
-    VertexArray VAO{};
-
-    VertexBufferLayout VBL{};
-    VBL.addAttribute(3, GL_FLOAT, GL_FALSE);
-    VBL.addAttribute(2, GL_FLOAT, GL_FALSE);
-
-    VAO.connectVertexBuffer(VBO, VBL);
-
-    Texture textureOne{ "res/container.jpg", GL_RGB };
-    Texture textureTwo{ "res/awesomeface.png", GL_RGBA };
-
-    shader.use();
-    shader.setInt("ourTexture1", 0); // Set slot
-    shader.setInt("ourTexture2", 1);
-
-    glm::mat4 model = glm::mat4(1.0f);
-    shader.setTransformation("model", 1, GL_FALSE, glm::value_ptr(model));
-
-    glm::mat4 projection; // Left hand + clipping
-    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-    shader.setTransformation("projection", 1, GL_FALSE, glm::value_ptr(projection));
-
-    // ---------------------------------------------------------------------------------
-
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+
     while (m_running)
     {
         updateDeltaTime();
         processKeyBoardMovement();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set state
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Use state
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        textureOne.activeAndBind(GL_TEXTURE0);
-        textureTwo.activeAndBind(GL_TEXTURE1);
+        // setViewMatrix
 
-        glm::mat4 view = m_camera.getViewMatrix();
-        shader.setTransformation("view", 1, GL_FALSE, glm::value_ptr(view));
-
-        VAO.bind();
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        // Rendering gebeuren
+        // Draw skybox
+        // Draw maze -> floor, walls
 
         m_window.update();
     }

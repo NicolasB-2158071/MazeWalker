@@ -27,8 +27,8 @@ void VertexArray::connectVertexBuffer(const VertexBuffer& vbo, const VertexBuffe
 		offset += vbl.getSizeOfType(attribute.type) * attribute.quantity;
 	}
 
-	unbind();
-	vbo.unbind();
+	//unbind();
+	//vbo.unbind();
 }
 
 void VertexArray::bind() const

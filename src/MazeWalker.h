@@ -18,6 +18,14 @@ private:
 	Window m_window;
 	Camera m_camera;
 
+	// Renderer
+	// maze
+	// floor
+	// skybox
+
+	// Input ook anders wegens springen (zwaartekracht!!)
+	// Random maze genereren is een algoritme (verschillende)
+
 	bool m_running;
 	float m_deltaTime;
 	float m_lastFrameTime;

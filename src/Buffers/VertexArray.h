@@ -1,8 +1,8 @@
 #pragma once
 
 #include <glad/glad.h>
-#include "../VertexBuffer/VertexBuffer.h"
-#include "../VertexBuffer/VertexBufferLayout.h"
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 
 // Based on: https://www.youtube.com/watch?v=oD1dvfbyf6A&t=529s
 class VertexArray
