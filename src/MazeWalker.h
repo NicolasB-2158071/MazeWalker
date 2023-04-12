@@ -1,14 +1,14 @@
 #pragma once
 
-#include <glad/glad.h>
 #include "Window/Window.h"
 #include "Camera/Camera.h"
 #include "EventManager/EventManager.h"
+#include "Renderer/Renderer.h"
 
 class MazeWalker
 {
 public:
-	MazeWalker(int windowWidth, int windowHeight, const char* titel);
+	MazeWalker(float windowWidth, float windowHeight, const char* titel);
 	//~MazeWalker();
 
 	void run();
@@ -17,10 +17,10 @@ private:
 	EventManager m_eventManager;
 	Window m_window;
 	Camera m_camera;
+	Renderer m_renderer;
 
 	// Renderer
 	// maze
-	// floor
 	// skybox
 
 	// Input ook anders wegens springen (zwaartekracht!!)

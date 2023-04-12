@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-MazeWalker::MazeWalker(int windowWidth, int windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager},
-m_camera{ windowWidth , windowHeight, &m_eventManager}, m_running{ true }, m_deltaTime{}, m_lastFrameTime{}, m_focus{false}
+// TEMP
+#include "Objects/Maze/Floor.h"
+#include <string>
+
+MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
+m_renderer{ "src/Shaders/CubVShader.vs", "src/Shaders/CubFShader.fs" }, m_running{ m_window.SUCCESS}, m_deltaTime{}, m_lastFrameTime{}, m_focus{false}
 {
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        m_running = false;
-    }
     // Maze uit file gelezen worden
+    m_renderer.setProjectionMatrix(glm::perspective(glm::radians(45.0f), m_window.getWidth() / m_window.getHeight(), 0.1f, 100.0f));
     initApplicationInputs();
 }
 
@@ -21,15 +21,29 @@ void MazeWalker::run()
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
+    //double prevTime{};
+    //double crntTime{};
+    //double timeDiff;
+    //unsigned int counter{};
+
+    Floor floor{ glm::vec2{1.0f, 1.0f} };
+
     while (m_running)
     {
+       /* crntTime = glfwGetTime();
+        timeDiff = crntTime - prevTime;
+        counter++;
+        if (timeDiff >= 1.0 / 30.0)
+            glfwSetWindowTitle(m_window.m_window, std::to_string((1.0 / timeDiff) * counter).c_str());*/
+
         updateDeltaTime();
         processKeyBoardMovement();
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // setViewMatrix
+        m_renderer.setViewMatrix(m_camera.getViewMatrix());
+        floor.draw(m_renderer);
 
         // Rendering gebeuren
         // Draw skybox

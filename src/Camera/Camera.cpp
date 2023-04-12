@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <GLFW/glfw3.h>
 
-Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.0f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, -1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
+Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.3f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, -1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
 m_firstMouse{ true }, m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }, m_yaw{ -90.0f }, m_pitch{ 0.0f }, m_cameraSpeed{2.5f}, m_mouseSpeed{0.1f}
 {
     initCameraInputs(eventManager);
@@ -25,7 +25,7 @@ void Camera::processKeyboardMovement(int keyPressed, float deltaTime)
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
         break;
     }
-    //m_cameraPos.y = 0.0f;
+    //m_cameraPos.y = 0.2f;
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)

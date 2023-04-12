@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
 
@@ -9,7 +10,7 @@
 class Window
 {
 public:
-	Window(int width, int height, const std::string& titel, EventManager* eventManager);
+	Window(float width, float height, const std::string& titel, EventManager* eventManager);
 	~Window();
 
 	void update();
@@ -17,13 +18,18 @@ public:
 	int getCurrentKeyPress() const;
 	void setCursorFocus(bool enabled);
 
+	float getWidth() const;
+	float getHeight() const;
+
+	bool SUCCESS;
+
 private:
 	GLFWwindow* m_window;
 
 	void initWindowCallbacks();
 
-	int m_width;
-	int m_height;
+	float m_width;
+	float m_height;
 	std::string m_titel;
 
 	bool init();

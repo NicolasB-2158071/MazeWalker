@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../Buffers/VertexArray.h"
 #include "../Textures/Texture.h"
 #include "../Shaders/Shader.h"
 
@@ -20,12 +21,13 @@
 class Renderer
 {
 public:
-	void setShader(const char* vertexShaderPath, const char* fragmentShaderPath);
+	Renderer(const char* vertexShaderPath, const char* fragmentShaderPath);
+
 	void setProjectionMatrix(const glm::mat4& projection);
 	void setViewMatrix(const glm::mat4& viewMatrix); // Valt te zien
 
-	void drawFloor(const glm::vec3& position, const glm::vec3& size, const Texture& texture);
-	void drawWall(const glm::vec3& position, const glm::vec3& size, const Texture& texture);
+	void drawFloor(const VertexArray& vao, const glm::vec2& size, const Texture& texture);
+	//void drawWalls(const glm::vec3& position, const glm::vec3& size, const Texture& texture);
 
 private:
 	Shader m_shader;

@@ -2,13 +2,15 @@
 
 #include <iostream>
 
-Window::Window(int width, int height, const std::string& titel, EventManager* eventManager) : m_width{ width }, m_height{ height }, m_titel{ titel }
+Window::Window(float width, float height, const std::string& titel, EventManager* eventManager) : m_width{ width }, m_height{ height }, m_titel{ titel }
 {
     if (!init())
     {
+        SUCCESS = false;
         destruct();
         return;
     }
+    SUCCESS = true;
     glfwSetWindowUserPointer(m_window, eventManager);
     initWindowCallbacks();
 }
@@ -34,6 +36,13 @@ bool Window::init()
         return false;
     }
     glfwMakeContextCurrent(m_window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
@@ -95,6 +104,16 @@ void Window::setCursorFocus(bool enabled)
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     else
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+float Window::getWidth() const
+{
+    return m_width;
+}
+
+float Window::getHeight() const
+{
+    return m_height;
 }
 
 void Window::destruct() const
