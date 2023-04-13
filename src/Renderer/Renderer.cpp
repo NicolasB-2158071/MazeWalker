@@ -33,3 +33,15 @@ void Renderer::drawFloor(const VertexArray& vao, const glm::vec2& size, const Te
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
+
+void Renderer::drawWalls(const VertexArray& vao, const glm::vec3& size, const Texture& texture, int amount)
+{
+	m_shader.use();
+	glm::mat4 model{ 1.0f };
+	model = glm::translate(model, glm::vec3{ 0.0f, size.y, 0.0f }); // Floor level, later ook x en z naar start player
+	m_shader.setMat4("model", 1, GL_FALSE, glm::scale(model, glm::vec3{ size.x, size.y, size.z }));
+
+	texture.activeAndBind(0);
+	vao.bind();
+	glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, amount);
+}

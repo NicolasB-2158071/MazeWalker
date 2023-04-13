@@ -27,7 +27,7 @@ public:
 	void setViewMatrix(const glm::mat4& viewMatrix); // Valt te zien
 
 	void drawFloor(const VertexArray& vao, const glm::vec2& size, const Texture& texture);
-	//void drawWalls(const glm::vec3& position, const glm::vec3& size, const Texture& texture);
+	void drawWalls(const VertexArray& vao, const glm::vec3& size, const Texture& texture, int amount);
 
 private:
 	Shader m_shader;

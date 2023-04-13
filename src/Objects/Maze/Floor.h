@@ -8,14 +8,14 @@
 class Floor
 {
 public:
-	Floor(const glm::vec2& size);
+	Floor(const glm::vec2& floorSize);
 
 	void draw(Renderer& renderer);
 
 
 private:
 	VertexArray m_vao;
-	glm::vec2 m_size;
+	glm::vec2 m_floorSize;
 	Texture m_texture;
 
 	void initVAO();

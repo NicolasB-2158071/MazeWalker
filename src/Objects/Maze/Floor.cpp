@@ -4,19 +4,20 @@
 #include "../../Buffers/IndexBuffer.h"
 #include "../../Buffers/VertexBuffer.h"
 
-Floor::Floor(const glm::vec2& size) : m_size{size}, m_texture{ "res/container.jpg", GL_RGB }
+Floor::Floor(const glm::vec2& floorSize) : m_floorSize{ floorSize }, m_texture{ "res/container.jpg", GL_RGB }
 {
 	initVAO();
 }
 
 void Floor::draw(Renderer& renderer)
 {
-    renderer.drawFloor(m_vao, m_size, m_texture);
+    renderer.drawFloor(m_vao, m_floorSize, m_texture);
 }
 
 void Floor::initVAO()
 {
     float vertices[] = {
+        // Pos            // Texture
         1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // top right
         1.0f, 0.0f, -1.0f, 1.0f, 0.0f,  // bottom right
         -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, // bottom left

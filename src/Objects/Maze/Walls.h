@@ -5,14 +5,20 @@
 class Walls
 {
 public:
-	Walls(); // Via instancing meerdere kunnen tekenen (later offsets)
+	Walls(const glm::vec3& wallSize, int amount); // Ook nog locaties
+
 	void draw(Renderer& renderer);
 
+	// setLocations and amount
+
 private:
+	const int m_amount;
+	glm::vec2 m_locations[5]; // TODO
+	glm::vec3 m_wallSize;
+
+
 	VertexArray m_vao;
 	Texture m_texture;
-	// locaties
-	// Instance 
 
 	void initVAO();
 };
