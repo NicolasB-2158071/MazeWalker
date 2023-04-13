@@ -39,6 +39,11 @@ void MazeReader::readLocations(const char* mazePath)
 	
 }
 
+glm::vec2* MazeReader::getWallLocations()
+{
+	return m_wallLocations.data();
+}
+
 int MazeReader::getWallAmount() const
 {
 	return m_wallAmount;

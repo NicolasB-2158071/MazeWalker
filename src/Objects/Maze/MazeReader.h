@@ -11,6 +11,8 @@ public:
 	MazeReader(const char* mazePath);
 
 	void readLocations(const char* mazePath);
+
+	glm::vec2* getWallLocations();
 	int getWallAmount() const;
 
 	// x en z richting

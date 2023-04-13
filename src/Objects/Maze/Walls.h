@@ -5,7 +5,7 @@
 class Walls
 {
 public:
-	Walls(const glm::vec3& wallSize, int amount); // Ook nog locaties
+	Walls(const glm::vec3& wallSize, int amount, glm::vec2* locations);
 
 	void draw(Renderer& renderer);
 
@@ -13,7 +13,7 @@ public:
 
 private:
 	const int m_amount;
-	glm::vec2 m_locations[5]; // TODO
+	glm::vec2* m_locations;
 	glm::vec3 m_wallSize;
 
 

@@ -5,14 +5,8 @@
 #include "../../Buffers/IndexBuffer.h"
 
 
-Walls::Walls(const glm::vec3& wallSize, int amount) : m_wallSize{ wallSize }, m_amount{ amount }, m_texture { "res/container.jpg", GL_RGB }
+Walls::Walls(const glm::vec3& wallSize, int amount, glm::vec2* locations) : m_wallSize{ wallSize }, m_amount{ amount }, m_locations{ locations }, m_texture { "res/container.jpg", GL_RGB }
 {
-    m_locations[0] = glm::vec2{ 2.0f, 5.0f };
-    m_locations[1] = glm::vec2{ -5.0f, -5.0f };
-    m_locations[2] = glm::vec2{ 10.0f, -5.0f };
-    m_locations[3] = glm::vec2{ -16.0f, 0.0f };
-    m_locations[4] = glm::vec2{ 12.0f, -8.0f };
-
     initVAO();
 }
 
