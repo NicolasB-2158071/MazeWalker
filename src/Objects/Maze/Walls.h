@@ -16,6 +16,7 @@ private:
 	glm::vec2* m_locations;
 	glm::vec3 m_wallSize;
 
+	glm::vec2 temp[2];
 
 	VertexArray m_vao;
 	Texture m_texture;

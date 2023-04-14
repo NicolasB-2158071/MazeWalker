@@ -29,7 +29,7 @@ void MazeReader::readLocations(const char* mazePath)
 				}
 				++xOffset;
 			}
-			xOffset = 0;
+			xOffset = 0.;
 			++zOffset;
 		}
 	}
