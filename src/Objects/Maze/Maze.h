@@ -14,9 +14,15 @@ public:
 
 	void draw(Renderer& renderer);
 
+	bool isWallColision(glm::vec2 cameraPos) const;
+
 private:
 	MazeBuilder m_builder;
 	Floor m_floor;
-	Walls m_walls; // Collision detection via eventManager
+	Walls m_walls;
 	// Models
+
+	// Frequently used data (every player movement)
+	const std::vector<glm::vec2>& m_wallsXZLocations;
+	glm::vec3 m_wallSize;
 };

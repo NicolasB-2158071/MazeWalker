@@ -18,12 +18,12 @@ public:
 
 private:
 	std::vector<std::string> m_textures{
-		"res/Skybox/right.jpg",
-		"res/Skybox/left.jpg",
-		"res/Skybox/top.jpg",
-		"res/Skybox/bottom.jpg",
-		"res/Skybox/front.jpg",
-		"res/Skybox/back.jpg"
+		"res/Skybox/right.png",
+		"res/Skybox/left.png",
+		"res/Skybox/top.png",
+		"res/Skybox/bottom.png",
+		"res/Skybox/front.png",
+		"res/Skybox/back.png"
 	};
 
 	VertexArray m_vao;

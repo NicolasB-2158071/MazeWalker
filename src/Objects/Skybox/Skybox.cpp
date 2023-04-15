@@ -4,7 +4,7 @@
 #include "../../Buffers/VertexBufferLayout.h"
 #include "../../Buffers/IndexBuffer.h"
 
-Skybox::Skybox(const glm::mat4& projection) : m_cubemap{ m_textures, GL_RGB }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
+Skybox::Skybox(const glm::mat4& projection) : m_cubemap{ m_textures, GL_RGBA }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
 {
     m_shader.use();
     m_shader.setMat4("projection", 1, GL_FALSE, projection);

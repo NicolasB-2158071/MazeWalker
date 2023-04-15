@@ -22,7 +22,8 @@ void MazeBuilder::readLocations(const char* mazePath)
 			{
 				if (c == '#')
 				{
-					m_wallLocations.push_back(calculateModel(xOffset, zOffset));
+					m_wallLocatioMatrices.push_back(calculateModel(xOffset, zOffset));
+					m_wallsXZLocations.push_back(glm::vec2{xOffset * m_wallSize.x, zOffset * m_wallSize.z}); // In right hand system: always to +x and -z (because of how to file is read), calculations always give left bottom point
 					++m_wallAmount;
 				}
 				++xOffset;
@@ -39,9 +40,19 @@ void MazeBuilder::readLocations(const char* mazePath)
 	
 }
 
-glm::mat4* MazeBuilder::getWallLocations()
+glm::mat4* MazeBuilder::getWallsLocationMatrices()
 {
-	return m_wallLocations.data();
+	return m_wallLocatioMatrices.data();
+}
+
+const std::vector<glm::vec2>& MazeBuilder::getWallsXZLocations() const
+{
+	return m_wallsXZLocations;
+}
+
+glm::vec3 MazeBuilder::getWallSize() const
+{
+	return m_wallSize;
 }
 
 int MazeBuilder::getWallAmount() const

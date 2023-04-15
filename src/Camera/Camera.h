@@ -17,6 +17,9 @@ public:
 
 	glm::mat4 getViewMatrix() const;
 
+	glm::vec2 getXZPosition() const;
+	void rewindCamera();
+
 	void setCameraSpeed(float cameraSpeed);
 	void setMouseSpeed(float mouseSpeed);
 
@@ -29,6 +32,9 @@ private:
 	glm::vec3 m_cameraPos;
 	glm::vec3 m_cameraFront;
 	glm::vec3 m_cameraUp;
+
+	// For collision
+	glm::vec2 m_oldPos;
 
 	// Mouse variables
 	bool m_firstMouse;

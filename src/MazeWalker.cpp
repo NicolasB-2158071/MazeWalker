@@ -27,6 +27,7 @@ void MazeWalker::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_maze->draw(m_renderer);
+        // Models
         m_skybox->draw(m_renderer); // Draw always as last
 
         m_window.update();
@@ -54,7 +55,12 @@ void MazeWalker::processKeyBoardMovement()
         return;
     }
     if (m_focus)
+    {
         m_camera.processKeyboardMovement(currentKeyPress, m_deltaTime);
+        if (m_maze->isWallColision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();
+    }
+    // aan maze vragen als collision, m_camera position en zo ja -> reset camera (of push back naar punt voor)
 }
 
 void MazeWalker::initApplicationInputs()

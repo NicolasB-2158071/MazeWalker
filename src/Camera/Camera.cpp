@@ -10,6 +10,7 @@ m_firstMouse{ true }, m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }, m
 void Camera::processKeyboardMovement(int keyPressed, float deltaTime)
 {
     float cameraSpeed{ m_cameraSpeed * deltaTime };
+    m_oldPos.x = m_cameraPos.x, m_oldPos.y = m_cameraPos.z;
     switch (keyPressed)
     {
     case GLFW_KEY_W:
@@ -25,7 +26,8 @@ void Camera::processKeyboardMovement(int keyPressed, float deltaTime)
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
         break;
     }
-    //m_cameraPos.y = 0.45f;
+
+    m_cameraPos.y = 0.5f;
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)
@@ -58,6 +60,17 @@ void Camera::processMouseMovement(double xpos, double ypos)
 glm::mat4 Camera::getViewMatrix() const
 {
     return glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
+}
+
+glm::vec2 Camera::getXZPosition() const
+{
+    return glm::vec2{m_cameraPos.x, m_cameraPos.z};
+}
+
+void Camera::rewindCamera()
+{
+    m_cameraPos.x = m_oldPos.x;
+    m_cameraPos.z = m_oldPos.y;
 }
 
 void Camera::setCameraSpeed(float cameraSpeed)
