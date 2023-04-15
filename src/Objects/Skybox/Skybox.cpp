@@ -1,39 +1,37 @@
-#include "Walls.h"
+#include "Skybox.h"
 
 #include "../../Buffers/VertexBuffer.h"
 #include "../../Buffers/VertexBufferLayout.h"
 #include "../../Buffers/IndexBuffer.h"
 
-
-Walls::Walls(const glm::mat4& projection) : m_texture{ "res/sandStone.jpg", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
+Skybox::Skybox(const glm::mat4& projection) : m_cubemap{ m_textures, GL_RGB }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
 {
     m_shader.use();
     m_shader.setMat4("projection", 1, GL_FALSE, projection);
     m_shader.setInt("textureOne", 0);
 }
 
-void Walls::draw(Renderer& renderer)
+void Skybox::draw(Renderer& renderer)
 {
-    renderer.drawWalls(m_vao, m_shader, m_texture, m_amount);
+    renderer.drawSkybox(m_vao, m_shader, m_cubemap);
 }
 
-void Walls::initObject(int amount, glm::mat4* locations)
+// VAO voor cube aanmaken
+void Skybox::initObject()
 {
-    m_amount = amount;
-
     // LBB (0) - LBT (1) - RBB (2) - RBT (3)
     // LFB (4) - LFT (5) - RFB (6) - RFT (7)
     float vertices[] = {
-        // Pos              // Texture
-       -1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
-       -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-        1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+        // Pos
+       -1.0f, -1.0f, -1.0f,
+       -1.0f,  1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
 
-       -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-       -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-        1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+       -1.0f, -1.0f,  1.0f,
+       -1.0f,  1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f
     };
 
     unsigned int indices[] = {
@@ -47,12 +45,8 @@ void Walls::initObject(int amount, glm::mat4* locations)
     VertexBuffer vbo{ vertices, sizeof(vertices) };
     VertexBufferLayout vbl{};
     vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
-    vbl.addAttribute(2, GL_FLOAT, GL_FALSE);
 
     m_vao.connectVertexBuffer(vbo, vbl);
     IndexBuffer ebo{ indices, sizeof(indices) }; // is nog gebind
-    VertexBuffer ivbo{ locations, sizeof(glm::mat4) * m_amount };
-  
-    m_vao.connectInstanceBuffer(ivbo, BufferAttribute{4, GL_FLOAT, GL_FALSE}, 2, 5, sizeof(glm::vec4));
     m_vao.unbind();
 }

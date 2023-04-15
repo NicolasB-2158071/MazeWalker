@@ -3,8 +3,11 @@
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
-m_renderer{ m_camera }, m_maze{ std::make_unique<Maze>(glm::perspective(glm::radians(45.0f), m_window.getWidth() / m_window.getHeight(), 0.1f, 100.0f)) },  m_running { m_window.SUCCESS }
+m_renderer{ m_camera }, m_running { m_window.SUCCESS }
 {
+    glm::mat4 projectionMatrix{ glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f) };
+    m_maze = std::make_unique<Maze>(projectionMatrix);
+    m_skybox = std::make_unique<Skybox>(projectionMatrix); m_skybox->initObject();
     initApplicationInputs();
 }
 
@@ -17,7 +20,6 @@ void MazeWalker::run()
 
     while (m_running)
     {
-
         updateDeltaTime();
         processKeyBoardMovement();
 
@@ -25,10 +27,7 @@ void MazeWalker::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_maze->draw(m_renderer);
-
-        // Rendering gebeuren
-        // Draw skybox
-        // Draw maze -> floor, walls
+        m_skybox->draw(m_renderer); // Draw always as last
 
         m_window.update();
     }

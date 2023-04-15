@@ -6,6 +6,7 @@
 #include "Renderer/Renderer.h"
 
 #include "Objects/Maze/Maze.h"
+#include "Objects/Skybox/Skybox.h"
 
 class MazeWalker
 {
@@ -22,7 +23,7 @@ private:
 	Renderer m_renderer;
 
 	std::unique_ptr<Maze> m_maze;
-	// skybox
+	std::unique_ptr<Skybox> m_skybox;
 
 	// Input ook anders wegens springen (zwaartekracht!!)
 	// Random maze genereren is een algoritme (verschillende)

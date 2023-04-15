@@ -7,6 +7,7 @@
 #include "../Camera/Camera.h"
 #include "../Buffers/VertexArray.h"
 #include "../Textures/Texture.h"
+#include "../Textures/Cubemap.h"
 #include "../Shaders/Shader.h"
 
 
@@ -17,6 +18,7 @@ public:
 
 	void drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture);
 	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);
+	void drawSkybox(const VertexArray& vao, const Shader& shader, const Cubemap& cubemap);
 
 private:
 	Camera& m_camera;

@@ -36,7 +36,6 @@ void Texture::loadImage(const char* path, unsigned int rgbType)
 {
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data{ stbi_load(path, &m_textureWidth, &m_textureHeight, &m_nrChannels, 0) };
-
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, rgbType, m_textureWidth, m_textureHeight, 0, rgbType, GL_UNSIGNED_BYTE, data);

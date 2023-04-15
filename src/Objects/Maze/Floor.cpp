@@ -4,7 +4,7 @@
 #include "../../Buffers/IndexBuffer.h"
 #include "../../Buffers/VertexBuffer.h"
 
-Floor::Floor(const glm::mat4& projection) : m_texture{ "res/container.jpg", GL_RGB }, m_shader{"src/Shaders/FloorVShader.vs", "src/Shaders/FloorFShader.fs"}
+Floor::Floor(const glm::mat4& projection) : m_texture{ "res/sandFloor.jpg", GL_RGB }, m_shader{"src/Shaders/FloorVShader.vs", "src/Shaders/FloorFShader.fs"}
 {
     m_shader.use();
     m_shader.setMat4("projection", 1, GL_FALSE, projection);
