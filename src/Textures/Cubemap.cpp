@@ -44,7 +44,7 @@ void Cubemap::loadImage(const char* path, unsigned int rgbType, int pos)
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load cubemap" << std::endl;
 	}
 	stbi_image_free(data);
 }
