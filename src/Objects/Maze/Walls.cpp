@@ -5,18 +5,22 @@
 #include "../../Buffers/IndexBuffer.h"
 
 
-Walls::Walls(const glm::vec3& wallSize, int amount, glm::vec2* locations) : m_wallSize{ wallSize }, m_amount{ amount }, m_locations{ locations }, m_texture { "res/container.jpg", GL_RGB }
+Walls::Walls(const glm::mat4& projection) : m_texture{ "res/container.jpg", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
 {
-    initVAO();
+    m_shader.use();
+    m_shader.setMat4("projection", 1, GL_FALSE, projection);
+    m_shader.setInt("textureOne", 0);
 }
 
 void Walls::draw(Renderer& renderer)
 {
-    renderer.drawWalls(m_vao, m_wallSize, m_texture, m_amount);
+    renderer.drawWalls(m_vao, m_shader, m_texture, m_amount);
 }
 
-void Walls::initVAO()
+void Walls::initObject(int amount, glm::mat4* locations)
 {
+    m_amount = amount;
+
     // LBB (0) - LBT (1) - RBB (2) - RBT (3)
     // LFB (4) - LFT (5) - RFB (6) - RFT (7)
     float vertices[] = {
@@ -47,10 +51,8 @@ void Walls::initVAO()
 
     m_vao.connectVertexBuffer(vbo, vbl);
     IndexBuffer ebo{ indices, sizeof(indices) }; // is nog gebind
-    VertexBuffer ivbo{ m_locations, sizeof(glm::vec2) * m_amount };
+    VertexBuffer ivbo{ locations, sizeof(glm::mat4) * m_amount };
   
-    m_vao.connectInstanceBuffer(ivbo, BufferAttribute{2, GL_FLOAT, GL_FALSE}, 2);
+    m_vao.connectInstanceBuffer(ivbo, BufferAttribute{4, GL_FLOAT, GL_FALSE}, 2, 5, sizeof(glm::vec4));
     m_vao.unbind();
-
-    // Instancing buffer met met x, z offsets op basis van file
 }

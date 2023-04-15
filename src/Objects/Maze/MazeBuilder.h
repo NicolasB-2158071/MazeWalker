@@ -5,26 +5,26 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-class MazeReader
+class MazeBuilder
 {
 public:
-	MazeReader(const char* mazePath);
+	MazeBuilder(const glm::vec3& wallSize);
 
 	void readLocations(const char* mazePath);
 
-	glm::vec2* getWallLocations();
+	glm::mat4* getWallLocations();
 	int getWallAmount() const;
-
-	// x en z richting
-	// # found -> glm::vec2
-	// ++amount
-
-	// Wall size (zelfde x en z)
+	float getWidth() const;
+	float getHeight() const;
 
 	// Weten waar player start voor vloor ook te tekenen en translatie muren
 
 private:
+	int m_width;
+	int m_height;
 	int m_wallAmount;
-	std::vector<glm::vec2> m_wallLocations;
+	glm::vec3 m_wallSize;
+	std::vector<glm::mat4> m_wallLocations;
 
+	glm::mat4 calculateModel(int xOffset, int zOffset) const;
 };

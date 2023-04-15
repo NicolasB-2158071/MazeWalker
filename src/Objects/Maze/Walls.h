@@ -5,21 +5,17 @@
 class Walls
 {
 public:
-	Walls(const glm::vec3& wallSize, int amount, glm::vec2* locations);
+	Walls(const glm::mat4& projection);
 
 	void draw(Renderer& renderer);
 
 	// setLocations and amount
+	void initObject(int amount, glm::mat4* locations);
 
 private:
-	const int m_amount;
-	glm::vec2* m_locations;
-	glm::vec3 m_wallSize;
-
-	glm::vec2 temp[2];
-
 	VertexArray m_vao;
 	Texture m_texture;
+	Shader m_shader;
 
-	void initVAO();
+	int m_amount = 1;
 };

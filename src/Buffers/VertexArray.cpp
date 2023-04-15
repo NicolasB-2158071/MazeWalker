@@ -31,12 +31,16 @@ void VertexArray::connectVertexBuffer(const VertexBuffer& vbo, const VertexBuffe
 	//vbo.unbind();
 }
 
-void VertexArray::connectInstanceBuffer(const VertexBuffer& ivbo, const BufferAttribute& attribute, int location) const
+// One attribute, the same for every attribute in vertex
+void VertexArray::connectInstanceBuffer(const VertexBuffer& ivbo, const BufferAttribute& attribute, int beginLocation, int endLocation, size_t sizeOfAttribute) const // moet?
 {
 	ivbo.bind();
-	glEnableVertexAttribArray(location);
-	glVertexAttribPointer(location, attribute.quantity, attribute.type, attribute.normalised, 0, 0); // Tightly packed
-	glVertexAttribDivisor(location, 1); // Update attribute every instance
+	for (int i = beginLocation; i <= endLocation; ++i)
+	{
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i, attribute.quantity, attribute.type, attribute.normalised, sizeOfAttribute * (1 + endLocation - beginLocation), (void*)(sizeOfAttribute * (i - beginLocation)));
+		glVertexAttribDivisor(i, 1); // Update attribute every instance
+	}
 }
 
 void VertexArray::bind() const

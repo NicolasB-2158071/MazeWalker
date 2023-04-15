@@ -4,33 +4,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../Camera/Camera.h"
 #include "../Buffers/VertexArray.h"
 #include "../Textures/Texture.h"
 #include "../Shaders/Shader.h"
 
 
-//struct quad
-//{
-//	/*glm::vec3 pos;
-//	glm::vec3 normal;
-//	glm::vec2 tex;*/
-//
-//	// Mesh object???
-//};
-
 class Renderer
 {
 public:
-	Renderer(const char* vertexShaderPath, const char* fragmentShaderPath);
+	Renderer(Camera& camera);
 
-	void setProjectionMatrix(const glm::mat4& projection);
-	void setViewMatrix(const glm::mat4& viewMatrix); // Valt te zien
-
-	void drawFloor(const VertexArray& vao, const glm::vec2& size, const Texture& texture);
-	void drawWalls(const VertexArray& vao, const glm::vec3& size, const Texture& texture, int amount);
+	void drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture);
+	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);
 
 private:
-	Shader m_shader;
+	Camera& m_camera;
 };
 
 // Starten met één renderer (quad)

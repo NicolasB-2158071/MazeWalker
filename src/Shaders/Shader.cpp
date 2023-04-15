@@ -102,7 +102,7 @@ void Shader::createProgramAndLinkProgram()
 	glDeleteShader(m_fID);
 }
 
-void Shader::use()
+void Shader::use() const
 {
 	glUseProgram(m_pID);
 }
@@ -122,25 +122,25 @@ void Shader::setFloat(const std::string& name, float value) const
 	glUniform1f(glGetUniformLocation(m_pID, name.c_str()), value);
 }
 
-void Shader::setVec3(const std::string& name, const glm::vec3& value)
+void Shader::setVec3(const std::string& name, const glm::vec3& value) const
 {
 	unsigned int vec3Location = glGetUniformLocation(m_pID, name.c_str());
 	glUniform3f(vec3Location, value.x, value.y, value.z);
 }
 
-void Shader::setVec4(const std::string& name, const glm::vec4& value)
+void Shader::setVec4(const std::string& name, const glm::vec4& value) const
 {
 	unsigned int vec4Location = glGetUniformLocation(m_pID, name.c_str());
 	glUniform4f(vec4Location, value.x, value.y, value.z, value.w);
 }
 
-void Shader::setMat3(const std::string& name, GLsizei quantity, GLboolean transpose, const glm::mat3& value)
+void Shader::setMat3(const std::string& name, GLsizei quantity, GLboolean transpose, const glm::mat3& value) const
 {
 	unsigned int transformLoc = glGetUniformLocation(m_pID, name.c_str());
 	glUniformMatrix3fv(transformLoc, quantity, transpose, glm::value_ptr(value));
 }
 
-void Shader::setMat4(const std::string& name, GLsizei quantity, GLboolean transpose, const glm::mat4& value)
+void Shader::setMat4(const std::string& name, GLsizei quantity, GLboolean transpose, const glm::mat4& value) const
 {
 	unsigned int transformLoc = glGetUniformLocation(m_pID, name.c_str());
 	glUniformMatrix4fv(transformLoc, quantity, transpose, glm::value_ptr(value));

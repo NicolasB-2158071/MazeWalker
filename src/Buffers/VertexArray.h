@@ -12,7 +12,7 @@ public:
 	~VertexArray();
 
 	void connectVertexBuffer(const VertexBuffer& vbo, const VertexBufferLayout& vbl) const;
-	void connectInstanceBuffer(const VertexBuffer& ivbo, const BufferAttribute& attribute, int location) const;
+	void connectInstanceBuffer(const VertexBuffer& ivbo, const BufferAttribute& attribute, int beginLocation, int endLocation, size_t sizeOfAttribute) const;
 
 	void bind() const;
 	void unbind() const;

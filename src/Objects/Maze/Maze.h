@@ -1,13 +1,13 @@
 #pragma once
 
-#include "MazeReader.h"
+#include "MazeBuilder.h"
 #include "Floor.h"
 #include "Walls.h"
 
 class Maze
 {
 public:
-	Maze();
+	Maze(const glm::mat4& projection);
 
 	// Constructor level
 	// Random maze generator (default constructor)
@@ -15,7 +15,7 @@ public:
 	void draw(Renderer& renderer);
 
 private:
-	MazeReader m_reader;
+	MazeBuilder m_builder;
 	Floor m_floor;
 	Walls m_walls; // Collision detection via eventManager
 	// Models

@@ -1,7 +1,12 @@
 #include "Maze.h"
 
-Maze::Maze() : m_reader{"res/testMaze.txt"}, m_floor{glm::vec2{1.0f, 1.0f}}, m_walls{glm::vec3{0.1f, 0.5f, 0.1f}, m_reader.getWallAmount(), m_reader.getWallLocations()}
-{}
+Maze::Maze(const glm::mat4& projection) : m_builder{ glm::vec3{0.2f, 0.5f, 0.2f } }, m_floor{ projection }, m_walls{ projection }
+{
+	// Init objects based on wallsize, width and height
+	m_builder.readLocations("res/maze.txt");
+	m_floor.initObject(m_builder.getWidth(), m_builder.getHeight());
+	m_walls.initObject(m_builder.getWallAmount(), m_builder.getWallLocations());
+}
 
 void Maze::draw(Renderer& renderer)
 {

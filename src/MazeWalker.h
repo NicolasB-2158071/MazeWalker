@@ -21,7 +21,7 @@ private:
 	Camera m_camera;
 	Renderer m_renderer;
 
-	std::unique_ptr<Maze> m_maze = std::make_unique<Maze>();
+	std::unique_ptr<Maze> m_maze;
 	// skybox
 
 	// Input ook anders wegens springen (zwaartekracht!!)

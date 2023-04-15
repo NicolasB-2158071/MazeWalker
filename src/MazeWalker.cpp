@@ -3,10 +3,8 @@
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
-m_renderer{ "src/Shaders/CubVShader.vs", "src/Shaders/CubFShader.fs" },  m_running{ m_window.SUCCESS}
+m_renderer{ m_camera }, m_maze{ std::make_unique<Maze>(glm::perspective(glm::radians(45.0f), m_window.getWidth() / m_window.getHeight(), 0.1f, 100.0f)) },  m_running { m_window.SUCCESS }
 {
-    // Maze uit file gelezen worden
-    m_renderer.setProjectionMatrix(glm::perspective(glm::radians(45.0f), m_window.getWidth() / m_window.getHeight(), 0.1f, 100.0f));
     initApplicationInputs();
 }
 
@@ -26,7 +24,6 @@ void MazeWalker::run()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_renderer.setViewMatrix(m_camera.getViewMatrix());
         m_maze->draw(m_renderer);
 
         // Rendering gebeuren
