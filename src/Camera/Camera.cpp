@@ -1,33 +1,26 @@
 #include "Camera.h"
 #include <GLFW/glfw3.h>
 
-Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.45f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, -1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
+Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.5f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, -1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
 m_firstMouse{ true }, m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }, m_yaw{ -90.0f }, m_pitch{ 0.0f }, m_cameraSpeed{2.5f}, m_mouseSpeed{0.1f}
 {
     initCameraInputs(eventManager);
 }
 
-void Camera::processKeyboardMovement(int keyPressed, float deltaTime)
+void Camera::processKeyboardMovement(Window::keyboardPresses presses, float deltaTime)
 {
     float cameraSpeed{ m_cameraSpeed * deltaTime };
     m_oldPos.x = m_cameraPos.x, m_oldPos.y = m_cameraPos.z;
-    switch (keyPressed)
-    {
-    case GLFW_KEY_W:
+    if (presses.key_w_active)
         m_cameraPos += cameraSpeed * m_cameraFront;
-        break;
-    case GLFW_KEY_S:
+    if (presses.key_s_active)
         m_cameraPos -= cameraSpeed * m_cameraFront;
-        break;
-    case GLFW_KEY_A:
+    if (presses.key_a_active)
         m_cameraPos -= glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
-        break;
-    case GLFW_KEY_D:
+    if (presses.key_d_active)
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
-        break;
-    }
 
-    m_cameraPos.y = 0.5f;
+    processJumping(presses.key_space_active);
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)
@@ -96,4 +89,28 @@ void Camera::initCameraInputs(EventManager* eventManager)
         processMouseMovement(mouseInfo.xpos, mouseInfo.ypos);
     });
     // focus input
+}
+
+void Camera::processJumping(bool spacePressed)
+{
+    // On ground
+    if (m_onGround)
+    {
+        m_cameraPos.y = 0.5f;
+        // Start of jump
+        if (spacePressed)
+            m_onGround = false; // Next frame process
+        return;
+    }
+
+    m_velocityY += m_gravity;
+    m_cameraPos.y += m_velocityY;
+    if (m_cameraPos.y >= m_maxHeight && m_gravity > 0.0f)
+        m_gravity *= -1;
+    else if (m_cameraPos.y <= 0.5f && m_gravity < 0.0f)
+    {
+        m_onGround = true;
+        m_velocityY = 0.0f;
+        m_gravity *= -1;
+    }
 }

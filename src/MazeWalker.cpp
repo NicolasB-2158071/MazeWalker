@@ -8,6 +8,7 @@ m_renderer{ m_camera }, m_running { m_window.SUCCESS }
     glm::mat4 projectionMatrix{ glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f) };
     m_maze = std::make_unique<Maze>(projectionMatrix);
     m_skybox = std::make_unique<Skybox>(projectionMatrix); m_skybox->initObject();
+
     initApplicationInputs();
 }
 
@@ -44,11 +45,8 @@ void MazeWalker::updateDeltaTime()
 // Keyboard input per frame voor synchronizatie (de rest adhv callbacks)
 void MazeWalker::processKeyBoardMovement()
 {
-    int currentKeyPress{ m_window.getCurrentKeyPress() };
-    if (currentKeyPress == -1)
-        return;
-
-    if (currentKeyPress == GLFW_KEY_ESCAPE)
+    Window::keyboardPresses presses{ m_window.processKeyboardPresses() };
+    if (presses.key_esc_active)
     {
         m_focus = false;
         m_window.setCursorFocus(false);
@@ -56,11 +54,10 @@ void MazeWalker::processKeyBoardMovement()
     }
     if (m_focus)
     {
-        m_camera.processKeyboardMovement(currentKeyPress, m_deltaTime);
+        m_camera.processKeyboardMovement(presses, m_deltaTime);
         if (m_maze->isWallColision(m_camera.getXZPosition()))
             m_camera.rewindCamera();
     }
-    // aan maze vragen als collision, m_camera position en zo ja -> reset camera (of push back naar punt voor)
 }
 
 void MazeWalker::initApplicationInputs()

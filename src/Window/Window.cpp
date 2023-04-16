@@ -82,20 +82,16 @@ void Window::update()
     glfwPollEvents();
 }
 
-int Window::getCurrentKeyPress() const
+Window::keyboardPresses Window::processKeyboardPresses()
 {
-    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-        return GLFW_KEY_W;
-    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-        return GLFW_KEY_S;
-    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-        return GLFW_KEY_A;
-    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-        return GLFW_KEY_D;
-    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        return GLFW_KEY_ESCAPE;
-    // ...
-    return -1;
+    m_presses.key_w_active = (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS);
+    m_presses.key_s_active = (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS);
+    m_presses.key_a_active = (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS);
+    m_presses.key_d_active = (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS);
+    m_presses.key_esc_active = (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS);
+    m_presses.key_space_active = (glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS);
+
+    return m_presses;
 }
 
 void Window::setCursorFocus(bool enabled)

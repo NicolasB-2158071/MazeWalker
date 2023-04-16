@@ -5,14 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../src/EventManager/EventManager.h"
+#include "../Window/Window.h"
 
 class Camera
 {
 public:
 	Camera(float windowWidth, float windowHeight, EventManager* eventManager);
 
-	// Of aparte functies
-	void processKeyboardMovement(int keyPressed, float deltaTime); // Opgeroepen door Window class (ook vangt callbacks op + disablen mouse cursor)
+	void processKeyboardMovement(Window::keyboardPresses presses, float deltaTime);
 	void processMouseMovement(double xpos, double ypos);
 
 	glm::mat4 getViewMatrix() const;
@@ -47,4 +47,11 @@ private:
 	// Sensitivy variables
 	float m_cameraSpeed;
 	float m_mouseSpeed;
+
+	// Jumping vars
+	float m_gravity = 0.001f;
+	float m_velocityY = 0.0f;
+	float m_maxHeight = 1.0f;
+	bool m_onGround = true;
+	void processJumping(bool spacePressed);
 };

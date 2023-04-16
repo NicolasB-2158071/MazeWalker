@@ -10,12 +10,23 @@
 class Window
 {
 public:
+
+	struct keyboardPresses
+	{
+		bool key_w_active{ false };
+		bool key_s_active{ false };
+		bool key_a_active{ false };
+		bool key_d_active{ false };
+		bool key_esc_active{ false };
+		bool key_space_active{ false };
+	};
+
 	Window(float width, float height, const std::string& titel, EventManager* eventManager);
 	~Window();
 
 	void update();
 	
-	int getCurrentKeyPress() const;
+	keyboardPresses processKeyboardPresses();
 	void setCursorFocus(bool enabled);
 
 	float getWidth() const;
@@ -25,6 +36,7 @@ public:
 
 private:
 	GLFWwindow* m_window;
+	keyboardPresses m_presses;
 
 	void initWindowCallbacks();
 

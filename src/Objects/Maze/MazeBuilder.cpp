@@ -23,7 +23,7 @@ void MazeBuilder::readLocations(const char* mazePath)
 				if (c == '#')
 				{
 					m_wallLocatioMatrices.push_back(calculateModel(xOffset, zOffset));
-					m_wallsXZLocations.push_back(glm::vec2{xOffset * m_wallSize.x, zOffset * m_wallSize.z}); // In right hand system: always to +x and -z (because of how to file is read), calculations always give left bottom point
+					m_wallsXZLocations.push_back(glm::vec2{ xOffset * m_wallSize.x * 2, zOffset * m_wallSize.z * 2});
 					++m_wallAmount;
 				}
 				++xOffset;

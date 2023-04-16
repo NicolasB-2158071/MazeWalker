@@ -28,7 +28,7 @@ private:
 	int m_wallAmount;
 	glm::vec3 m_wallSize;
 	std::vector<glm::mat4> m_wallLocatioMatrices;
-	std::vector<glm::vec2> m_wallsXZLocations; // Left bottom point of rectangle
+	std::vector<glm::vec2> m_wallsXZLocations; // Left top point of rectangle
 	// x, z links bottom bijhouden
 
 	glm::mat4 calculateModel(int xOffset, int zOffset) const;
