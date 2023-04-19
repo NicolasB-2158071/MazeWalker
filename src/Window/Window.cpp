@@ -94,6 +94,11 @@ Window::keyboardPresses Window::processKeyboardPresses()
     return m_presses;
 }
 
+bool Window::isAKeyPressed() const
+{
+    return m_presses.key_w_active || m_presses.key_s_active || m_presses.key_a_active || m_presses.key_d_active || m_presses.key_space_active;
+}
+
 void Window::setCursorFocus(bool enabled)
 {
     if (enabled)

@@ -21,15 +21,14 @@ void Floor::initObject(float width, float height)
 {
     m_shader.use();
     glm::mat4 model{ 1.0f };
-    model = glm::translate(model, glm::vec3{(int)width, 0.0f, (int)height});
     m_shader.setMat4("model", 1, GL_FALSE, glm::scale(model, glm::vec3{ width, 0.0f, height}));
 
     float vertices[] = {
-        // Pos            // Texture
-        1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // top right
-        1.0f, 0.0f, -1.0f, 1.0f, 0.0f,  // bottom right
-        -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, // bottom left
-        -1.0f, 0.0f, 1.0f, 0.0f, 1.0f // top left
+        // Pos            // Texture   // Normals
+        1.0f, 0.0f, 1.0f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f, // top right
+        1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
+        0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
+        0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f // top left
     };
 
     unsigned int indices[] = {
@@ -41,6 +40,7 @@ void Floor::initObject(float width, float height)
     VertexBufferLayout vbl{};
     vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
     vbl.addAttribute(2, GL_FLOAT, GL_FALSE);
+    vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
 
     // bind
     m_vao.connectVertexBuffer(vbo, vbl);

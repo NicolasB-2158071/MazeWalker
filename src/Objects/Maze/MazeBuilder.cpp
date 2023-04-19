@@ -23,14 +23,14 @@ void MazeBuilder::readLocations(const char* mazePath)
 				if (c == '#')
 				{
 					m_wallLocatioMatrices.push_back(calculateModel(xOffset, zOffset));
-					m_wallsXZLocations.push_back(glm::vec2{ xOffset * m_wallSize.x * 2, zOffset * m_wallSize.z * 2});
+					m_wallsXZLocations.push_back(glm::vec2{ xOffset * m_wallSize.x, zOffset * m_wallSize.z});
 					++m_wallAmount;
 				}
 				++xOffset;
 			}
 			m_width = xOffset;
 			xOffset = 0;
-			--zOffset; // Maze in txt is upside down
+			++zOffset;
 		}
 		m_height = zOffset;
 	}
@@ -73,7 +73,7 @@ float MazeBuilder::getHeight() const
 glm::mat4 MazeBuilder::calculateModel(int xOffset, int zOffset) const
 {
 	glm::mat4 model{ 1.0f };
-	model = glm::translate(model, glm::vec3{ 2 * m_wallSize.x * xOffset, m_wallSize.y, 2 * m_wallSize.z * zOffset });
+	model = glm::translate(model, glm::vec3{ m_wallSize.x * xOffset, 0, m_wallSize.z * zOffset });
 	model = glm::scale(model, glm::vec3{ m_wallSize.x, m_wallSize.y, m_wallSize.z});
 
 	return std::move(model);

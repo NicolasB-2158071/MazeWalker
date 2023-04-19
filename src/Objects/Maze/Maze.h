@@ -14,7 +14,7 @@ public:
 
 	void draw(Renderer& renderer);
 
-	bool isWallColision(glm::vec2 cameraPos) const;
+	bool isWallColision(const glm::vec2& cameraPos) const;
 
 private:
 	MazeBuilder m_builder;
