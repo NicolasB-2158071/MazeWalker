@@ -12,8 +12,6 @@ void Maze::draw(Renderer& renderer)
 {
 	m_floor.draw(renderer);
 	m_walls.draw(renderer);
-
-	m_lightCube.draw(renderer);
 }
 
 bool Maze::isWallColision(const glm::vec2& cameraPos) const

@@ -1,5 +1,6 @@
 #include "UniformBuffer.h"
 
+
 UniformBuffer::UniformBuffer(unsigned int size, int bindingPoint)
 {
 	glGenBuffers(1, &m_uniformID);

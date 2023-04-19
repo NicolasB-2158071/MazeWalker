@@ -3,8 +3,7 @@
 #include "MazeBuilder.h"
 #include "Floor.h"
 #include "Walls.h"
-
-#include "LightObject.h"
+#include "Lights.h"
 
 class Maze
 {
@@ -22,10 +21,8 @@ private:
 	MazeBuilder m_builder;
 	Floor m_floor;
 	Walls m_walls;
+	Lights m_lights;
 	// Models
-
-	// TEMP
-	LightObject m_lightCube;
 
 	// Frequently used data (every player movement)
 	const std::vector<glm::vec2>& m_wallsXZLocations;
