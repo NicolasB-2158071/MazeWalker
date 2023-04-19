@@ -1,7 +1,6 @@
 #include "Maze.h"
 
-Maze::Maze(const glm::mat4& projection) : m_builder{ glm::vec3{1.0f, 1.0f, 1.0f } }, m_floor{ projection }, m_walls{ projection },
-m_wallsXZLocations{m_builder.getWallsXZLocations()}, m_wallSize{ m_builder.getWallSize()}
+Maze::Maze() : m_builder{ glm::vec3{1.0f, 2.0f, 1.0f } }, m_wallsXZLocations{m_builder.getWallsXZLocations()}, m_wallSize{ m_builder.getWallSize()}
 {
 	// Init objects based on wallsize, width and height
 	m_builder.readLocations("res/maze.txt");
@@ -13,6 +12,8 @@ void Maze::draw(Renderer& renderer)
 {
 	m_floor.draw(renderer);
 	m_walls.draw(renderer);
+
+	m_lightCube.draw(renderer);
 }
 
 bool Maze::isWallColision(const glm::vec2& cameraPos) const
@@ -29,3 +30,14 @@ bool Maze::isWallColision(const glm::vec2& cameraPos) const
 	}
 	return false;
 }
+
+
+// Render één cube DONE
+// Licht doen met materials (eerst floor) ->
+// Initiëel: normalModel in shader
+// Material (overal hetzelfde) zetten + lightPos
+// Attentuation
+// Multiple lights!!!
+
+// Walls -> (voor walls normalmodel als instancing)
+// Multiple light sources via instancing

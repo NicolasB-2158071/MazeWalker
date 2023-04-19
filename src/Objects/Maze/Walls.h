@@ -5,7 +5,7 @@
 class Walls
 {
 public:
-	Walls(const glm::mat4& projection);
+	Walls();
 
 	void draw(Renderer& renderer);
 

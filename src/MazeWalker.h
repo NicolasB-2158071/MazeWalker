@@ -34,6 +34,7 @@ private:
 	void updateDeltaTime();
 
 	bool m_focus = false;
+	bool m_wireframe = false;
 
 	void processKeyBoardMovement(); // Keyboardmovement best processed per frame (or using some constant deltaTime to synch keyCallback events)
 	void initApplicationInputs();

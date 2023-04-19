@@ -5,12 +5,10 @@
 #include "../../Shaders/Shader.h"
 #include "../../Renderer/Renderer.h"
 
-// VAO aanmaken, aparte shader (projection matrix), anders renderen
-
 class Skybox
 {
 public:
-	Skybox(const glm::mat4& projection);
+	Skybox();
 
 	void draw(Renderer& renderer);
 

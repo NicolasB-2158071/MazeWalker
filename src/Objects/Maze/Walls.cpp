@@ -5,11 +5,11 @@
 #include "../../Buffers/IndexBuffer.h"
 
 
-Walls::Walls(const glm::mat4& projection) : m_texture{ "res/sandStone.jpg", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
+Walls::Walls() : m_texture{ "res/sandStone.jpg", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
 {
     m_shader.use();
-    m_shader.setMat4("projection", 1, GL_FALSE, projection);
     m_shader.setInt("textureOne", 0);
+    m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
 }
 
 void Walls::draw(Renderer& renderer)
@@ -26,14 +26,14 @@ void Walls::initObject(int amount, glm::mat4* locations)
         // Top (LFT - LBT - RFT - RBT): pos, tex, normals (0 - 3)
          0.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
          0.0f,  1.0f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
          1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
 
          // Bottom (LFB - LBB - RFB - RBB): pos, tex, normals (4 - 7)
          0.0f,  0.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
-         0.0f,  0.0f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+         0.0f,  0.0f,  0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
          1.0f,  0.0f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
-         1.0f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+         1.0f,  0.0f,  0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f,
 
          // Front (LFB - LFT - RFB - RFT): pos, tex, normals (8 - 11)
          0.0f,  0.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -48,16 +48,16 @@ void Walls::initObject(int amount, glm::mat4* locations)
          1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
 
          // Left (LFB - LBB - LFT - LBT): pos, tex, normals (16 - 19)
-         0.0f,  0.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+         0.0f,  0.0f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
          0.0f,  0.0f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
-         0.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+         0.0f,  1.0f,  1.0f, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f,
          0.0f,  1.0f,  0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
 
-        // Right (RFB - RBB - RFT - RBT): pos, tex, normals (20 - 23)
-        1.0f,  0.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        1.0f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-        1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+         // Right (RFB - RBB - RFT - RBT): pos, tex, normals (20 - 23)
+         1.0f,  0.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
     };
 
     unsigned int indices[] = {

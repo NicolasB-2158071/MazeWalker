@@ -5,9 +5,8 @@
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
 m_renderer{ m_camera }, m_running { m_window.SUCCESS }
 {
-    glm::mat4 projectionMatrix{ glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f) };
-    m_maze = std::make_unique<Maze>(projectionMatrix);
-    m_skybox = std::make_unique<Skybox>(projectionMatrix); m_skybox->initObject();
+    m_maze = std::make_unique<Maze>();
+    m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
 
     initApplicationInputs();
 }
@@ -26,6 +25,8 @@ void MazeWalker::run()
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        m_renderer.prepare(); // View matrix
 
         m_maze->draw(m_renderer);
         // Models
@@ -70,6 +71,11 @@ void MazeWalker::initApplicationInputs()
     // WORDT STEEDS BIJ EEN CLICK OPGEROEPEN!!!
     m_eventManager.registerCallback(EventType::WINDOW_FOCUS, [this](EventInfo& info)
     {
+        if (m_focus)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_FILL : GL_LINE);
+            m_wireframe = !m_wireframe;
+        }
         m_focus = true;
         m_camera.newFocus();
         m_window.setCursorFocus(true);

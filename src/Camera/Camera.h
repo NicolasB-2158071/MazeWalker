@@ -16,6 +16,7 @@ public:
 	void processMouseMovement(double xpos, double ypos);
 
 	glm::mat4 getViewMatrix() const;
+	glm::mat4 getProjectionMatrix() const;
 
 	glm::vec2 getXZPosition() const;
 	void rewindCamera();
@@ -32,6 +33,8 @@ private:
 	glm::vec3 m_cameraPos;
 	glm::vec3 m_cameraFront;
 	glm::vec3 m_cameraUp;
+
+	glm::mat4 m_projectionMatrix;
 
 	// For collision
 	glm::vec2 m_oldPos;

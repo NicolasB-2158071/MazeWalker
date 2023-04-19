@@ -107,6 +107,13 @@ void Shader::use() const
 	glUseProgram(m_pID);
 }
 
+// Assumes already in usage
+void Shader::bindUniformBlock(const std::string& name, unsigned int bindPoint)
+{
+	unsigned int location = glGetUniformBlockIndex(m_pID, name.c_str());
+	glUniformBlockBinding(m_pID, location, bindPoint);
+}
+
 void Shader::setBool(const std::string& name, bool value) const
 {
 	glUniform1i(glGetUniformLocation(m_pID, name.c_str()), (int)value);

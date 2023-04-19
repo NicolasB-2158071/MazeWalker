@@ -18,6 +18,7 @@ public:
 	~Shader();
 
 	void use() const;
+	void bindUniformBlock(const std::string& name, unsigned int bindPoint);
 
 	void setBool(const std::string& name, bool value) const;
 	void setInt(const std::string& name, int value) const;

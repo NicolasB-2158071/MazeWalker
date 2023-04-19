@@ -1,11 +1,20 @@
 #include "Renderer.h"
 
-Renderer::Renderer(Camera& camera) : m_camera{camera} {}
+Renderer::Renderer(Camera& camera) : m_camera{camera}, m_cameraBuffer{2 * sizeof(glm::mat4), TRANSFORMATION_BLOCK }
+{
+	m_cameraBuffer.bind();
+	m_cameraBuffer.addData(0, sizeof(glm::mat4), glm::value_ptr(m_camera.getProjectionMatrix()));
+}
+
+void Renderer::prepare()
+{
+	m_cameraBuffer.bind();
+	m_cameraBuffer.addData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(m_camera.getViewMatrix()));
+}
 
 void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture)
 {
 	shader.use();
-	shader.setMat4("view", 1, GL_FALSE, m_camera.getViewMatrix());
 
 	texture.activeAndBind(0);
 	vao.bind();
@@ -16,7 +25,6 @@ void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Tex
 void Renderer::drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount)
 {
 	shader.use();
-	shader.setMat4("view", 1, GL_FALSE, m_camera.getViewMatrix());
 
 	texture.activeAndBind(0);
 	vao.bind();
@@ -27,10 +35,17 @@ void Renderer::drawSkybox(const VertexArray& vao, const Shader& shader, const Cu
 {
 	glDepthFunc(GL_LEQUAL);
 	shader.use();
-	shader.setMat4("view", 1, GL_FALSE, glm::mat4(glm::mat3(m_camera.getViewMatrix()))); // Translation gone
 
 	cubemap.activeAndBind(0);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glDepthFunc(GL_LESS);
+}
+
+void Renderer::drawCube(const VertexArray& vao, const Shader& shader)
+{
+	shader.use();
+
+	vao.bind();
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }

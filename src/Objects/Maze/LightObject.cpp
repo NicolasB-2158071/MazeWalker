@@ -1,28 +1,34 @@
-#include "Skybox.h"
+#include "LightObject.h"
 
-#include "../../Buffers/VertexBuffer.h"
 #include "../../Buffers/VertexBufferLayout.h"
 #include "../../Buffers/IndexBuffer.h"
+#include "../../Buffers/VertexBuffer.h"
 
-Skybox::Skybox() : m_cubemap{ m_textures, GL_RGBA }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
+
+LightObject::LightObject() :m_shader{ "src/Shaders/tempVShader.vs", "src/Shaders/tempFShader.fs" }
 {
     m_shader.use();
-    m_shader.setInt("textureOne", 0);
+    m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
+    initObject();
 }
 
-void Skybox::draw(Renderer& renderer)
+void LightObject::draw(Renderer& renderer)
 {
-    renderer.drawSkybox(m_vao, m_shader, m_cubemap);
+    renderer.drawCube(m_vao, m_shader);
 }
 
-// VAO voor cube aanmaken
-void Skybox::initObject()
+void LightObject::initObject()
 {
+    m_shader.use();
+    glm::mat4 model{ 1.0f };
+    model = glm::translate(model, glm::vec3{ 1.0f, 1.0f, 1.0f });
+    m_shader.setMat4("model", 1, GL_FALSE, glm::scale(model, glm::vec3{ 0.3f, 0.3f, 0.3f}));
+
     // LBB (0) - LBT (1) - RBB (2) - RBT (3)
     // LFB (4) - LFT (5) - RFB (6) - RFT (7)
     float vertices[] = {
         // Pos
-       -1.0f, -1.0f, -1.0f,
+       -1.0f, -1.0f, -1.0f, 
        -1.0f,  1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
         1.0f,  1.0f, -1.0f,
@@ -41,10 +47,12 @@ void Skybox::initObject()
         4, 6, 0, 0, 6, 2, // Bottom (LFB - RFB - LBB - LBB - RFB - RBB)
         5, 7, 1, 1, 7, 3 // Top (LFT - RFT - LBT - LBT - RFT - RBT)
     };
+
     VertexBuffer vbo{ vertices, sizeof(vertices) };
     VertexBufferLayout vbl{};
     vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
 
+    // bind
     m_vao.connectVertexBuffer(vbo, vbl);
     IndexBuffer ebo{ indices, sizeof(indices) }; // is nog gebind
     m_vao.unbind();

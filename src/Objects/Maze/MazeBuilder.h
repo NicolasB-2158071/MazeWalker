@@ -20,8 +20,6 @@ public:
 	float getWidth() const;
 	float getHeight() const;
 
-	// Weten waar player start voor vloor ook te tekenen en translatie muren
-
 private:
 	int m_width;
 	int m_height;
@@ -29,7 +27,6 @@ private:
 	glm::vec3 m_wallSize;
 	std::vector<glm::mat4> m_wallLocatioMatrices;
 	std::vector<glm::vec2> m_wallsXZLocations; // Left top point of rectangle
-	// x, z links bottom bijhouden
 
 	glm::mat4 calculateModel(int xOffset, int zOffset) const;
 };

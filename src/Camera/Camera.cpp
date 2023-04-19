@@ -2,9 +2,10 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 
-Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.5f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, -1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
-m_firstMouse{ true }, m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }, m_yaw{ -90.0f }, m_pitch{ 0.0f }, m_cameraSpeed{2.5f}, m_mouseSpeed{0.1f}
+Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_cameraPos{ 0.0f, 0.5f, 0.0f }, m_cameraFront{ 0.0f, 0.0f, 1.0f }, m_cameraUp{ 0.0f, 1.0f, 0.0f },
+m_firstMouse{ true }, m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }, m_yaw{ 90.0f }, m_pitch{ 0.0f }, m_cameraSpeed{2.5f}, m_mouseSpeed{0.1f}
 {
+    m_projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f);
     initCameraInputs(eventManager);
 }
 
@@ -53,6 +54,11 @@ void Camera::processMouseMovement(double xpos, double ypos)
 glm::mat4 Camera::getViewMatrix() const
 {
     return glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
+}
+
+glm::mat4 Camera::getProjectionMatrix() const
+{
+    return m_projectionMatrix;
 }
 
 glm::vec2 Camera::getXZPosition() const
