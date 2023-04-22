@@ -14,11 +14,13 @@ void Renderer::prepare()
 
 void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture)
 {
+	glEnable(GL_BLEND);
 	shader.use();
 
 	texture.activeAndBind(0);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDisable(GL_BLEND);
 }
 
 // Eerst scaling dan translatie (omgekeerde volgorde in code!!)

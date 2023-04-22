@@ -10,6 +10,7 @@ Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_s
 {
 	m_shader.use();
 	m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
+	m_shader.bindUniformBlock("PointLightBlock", POINTLIGHT_BLOCK);
 }
 
 void Lights::setLocations(const std::vector<glm::vec2>& locations)
