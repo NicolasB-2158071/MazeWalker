@@ -56,15 +56,6 @@ void Floor::initObject(float width, float height)
 
 void Floor::initLighting() const
 {
-    //m_shader.setVec3("light.position", glm::vec3{ 1.0f, 1.0f, 1.0f }); // TODO multiple casters
-    //m_shader.setVec3("light.ambient", glm::vec3{ 0.8f, 0.8f, 0.8f });
-    //m_shader.setVec3("light.diffuse", glm::vec3{ 0.5f, 0.5f, 0.5f });
-    //m_shader.setVec3("light.specular", glm::vec3{ 1.0f, 1.0f, 1.0f });
-    //m_shader.setFloat("light.Kc", 1.0f);
-    //m_shader.setFloat("light.K1", 0.09f);
-    //m_shader.setFloat("light.Kq", 0.032f);
-
-    // Enkel dit blijft
     m_shader.setVec3("material.specular", glm::vec3{ 0.5f, 0.5f, 0.5f });
     m_shader.setFloat("material.shininess", 64.0f);
 }

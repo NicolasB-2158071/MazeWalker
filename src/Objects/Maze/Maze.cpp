@@ -11,11 +11,14 @@ Maze::Maze() : m_builder{ glm::vec3{1.0f, 2.0f, 1.0f } }, m_wallsXZLocations{m_b
 void Maze::draw(Renderer& renderer)
 {
 	m_floor.draw(renderer);
-	m_walls.draw(renderer);
+	//m_walls.draw(renderer);
 }
 
 bool Maze::isWallColision(const glm::vec2& cameraPos) const
 {
+	if (cameraPos.y > 2.0f)
+		return false;
+
 	for (auto& pos : m_wallsXZLocations)
 	{
 		// Between x and z intervals (pos is origin of object)

@@ -17,7 +17,7 @@ UniformBuffer::~UniformBuffer()
 // Assume already bind
 void UniformBuffer::addData(unsigned int offset, unsigned int size, const void* data)
 {
-	glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
+	glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data); // Aligned offset + base alignement size
 }
 
 void UniformBuffer::bind() const

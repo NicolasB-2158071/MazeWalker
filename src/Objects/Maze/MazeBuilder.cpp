@@ -26,6 +26,7 @@ void MazeBuilder::readLocations(const char* mazePath)
 					m_wallsXZLocations.push_back(glm::vec2{ xOffset * m_wallSize.x, zOffset * m_wallSize.z});
 					++m_wallAmount;
 				}
+				/*else if ()*/
 				++xOffset;
 			}
 			m_width = xOffset;

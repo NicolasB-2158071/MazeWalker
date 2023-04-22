@@ -23,9 +23,11 @@ public:
 	};
 
 	const static unsigned int POINTLIGHT_BLOCK = 1;
-	const static unsigned int NUMBER_OF_LIGHTS = 1;
+	const static unsigned int NUMBER_OF_LIGHTS = 2;
 
 	Lights();
+
+	//void draw(Renderer& renderer);
 
 	// Gegeven point light locaties (mazebuilder) -> set point lights (met random waardes)
 	// tekent ook via instancing de punten (via model)
@@ -33,11 +35,11 @@ public:
 private:
 	UniformBuffer m_lightBuffer;
 
+	glm::vec2 locations[NUMBER_OF_LIGHTS] = {
+		glm::vec2{1.0f, 1.0f},
+		glm::vec2{10.0f, 10.0f}
+	};
+
 	void initPointLights();
 	float randomFloat() const;
-
-	// TEMP
-	glm::vec2 locations[NUMBER_OF_LIGHTS] = {
-		glm::vec2{1.0f, 1.0f}
-	};
 };
