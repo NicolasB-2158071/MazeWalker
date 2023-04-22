@@ -21,7 +21,7 @@ in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
 
-#define NUMBER_OF_LIGHTS 2
+#define NUMBER_OF_LIGHTS 8
 
 layout (std140) uniform TransformationBlock
 {

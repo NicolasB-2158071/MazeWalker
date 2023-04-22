@@ -3,13 +3,14 @@
 #include "../../Buffers/VertexBuffer.h"
 #include "../../Buffers/VertexBufferLayout.h"
 #include "../../Buffers/IndexBuffer.h"
+#include "Lights.h"
 
-
-Walls::Walls() : m_texture{ "res/sandStone.jpg", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
+Walls::Walls() : m_texture{ "res/bookshelf.png", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
 {
     m_shader.use();
-    m_shader.setInt("textureOne", 0);
+    m_shader.setInt("material.diffuse", 0);
     m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
+    m_shader.bindUniformBlock("PointLightBlock", Lights::POINTLIGHT_BLOCK);
 }
 
 void Walls::draw(Renderer& renderer)
@@ -17,9 +18,12 @@ void Walls::draw(Renderer& renderer)
     renderer.drawWalls(m_vao, m_shader, m_texture, m_amount);
 }
 
-void Walls::initObject(int amount, glm::mat4* locations)
+void Walls::initObject(int amount, std::vector<glm::mat4>& locations)
 {
     m_amount = amount;
+
+    m_shader.use();
+    initLighting();
 
     // Origin (0, 0, 0)
     float vertices[] = {
@@ -77,10 +81,29 @@ void Walls::initObject(int amount, glm::mat4* locations)
 
     m_vao.connectVertexBuffer(vbo, vbl);
     IndexBuffer ebo{ indices, sizeof(indices) }; // is nog gebind
-    VertexBuffer ivbo{ locations, sizeof(glm::mat4) * m_amount };
+    VertexBuffer ivboLocation{ locations.data(), sizeof(glm::mat4) * m_amount};
+    VertexBuffer ivboNormalModel{ calculateNormalModels(locations).data(), sizeof(glm::mat3) * m_amount };
   
-    m_vao.connectInstanceBuffer(ivbo, BufferAttribute{4, GL_FLOAT, GL_FALSE}, 3, 6, sizeof(glm::vec4));
+    m_vao.connectInstanceBuffer(ivboLocation, BufferAttribute{4, GL_FLOAT, GL_FALSE}, 3, 6, sizeof(glm::vec4));
+    m_vao.connectInstanceBuffer(ivboNormalModel, BufferAttribute{3, GL_FLOAT, GL_FALSE }, 7, 9, sizeof(glm::vec4));
     m_vao.unbind();
+}
+
+void Walls::initLighting()
+{
+    m_shader.setVec3("material.specular", glm::vec3{ 0.8f, 0.8f, 0.8f });
+    m_shader.setFloat("material.shininess", 64.0f);
+}
+
+std::vector<glm::mat3> Walls::calculateNormalModels(const std::vector<glm::mat4>& locations) const
+{
+    std::vector<glm::mat3> normalModels;
+    for (const auto& location : locations)
+    {
+        glm::mat3 normalModel = glm::transpose(glm::inverse(location));
+        normalModels.push_back(std::move(normalModel));
+    }
+    return normalModels;
 }
 
 

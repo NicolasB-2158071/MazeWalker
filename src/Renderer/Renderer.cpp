@@ -42,10 +42,10 @@ void Renderer::drawSkybox(const VertexArray& vao, const Shader& shader, const Cu
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::drawCube(const VertexArray& vao, const Shader& shader)
+void Renderer::drawLights(const VertexArray& vao, const Shader& shader, int amount)
 {
 	shader.use();
 
 	vao.bind();
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, amount);
 }

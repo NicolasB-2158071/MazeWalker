@@ -24,8 +24,7 @@ public:
 	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);
 	void drawSkybox(const VertexArray& vao, const Shader& shader, const Cubemap& cubemap);
 
-	// TEMP
-	void drawCube(const VertexArray& vao, const Shader& shader);
+	void drawLights(const VertexArray& vao, const Shader& shader, int amount);
 
 private:
 	Camera& m_camera;

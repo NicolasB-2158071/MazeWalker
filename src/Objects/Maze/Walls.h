@@ -10,7 +10,7 @@ public:
 	void draw(Renderer& renderer);
 
 	// setLocations and amount
-	void initObject(int amount, glm::mat4* locations);
+	void initObject(int amount, std::vector<glm::mat4>& locations);
 
 private:
 	VertexArray m_vao;
@@ -18,4 +18,7 @@ private:
 	Shader m_shader;
 
 	int m_amount = 1;
+
+	void initLighting();
+	std::vector<glm::mat3> calculateNormalModels(const std::vector<glm::mat4>& locations) const;
 };

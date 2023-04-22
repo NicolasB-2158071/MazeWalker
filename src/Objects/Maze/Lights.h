@@ -3,8 +3,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
+#include "../../Renderer/Renderer.h"
 #include "../../Buffers/UniformBuffer.h"
+
 
 class Lights
 {
@@ -23,23 +26,27 @@ public:
 	};
 
 	const static unsigned int POINTLIGHT_BLOCK = 1;
-	const static unsigned int NUMBER_OF_LIGHTS = 2;
+	const static unsigned int NUMBER_OF_LIGHTS = 8;
 
 	Lights();
+	void setLocations(const std::vector<glm::vec2>& locations);
 
-	//void draw(Renderer& renderer);
+	void draw(Renderer& renderer);
 
 	// Gegeven point light locaties (mazebuilder) -> set point lights (met random waardes)
 	// tekent ook via instancing de punten (via model)
 
 private:
 	UniformBuffer m_lightBuffer;
+	VertexArray m_vao;
+	Shader m_shader;
 
-	glm::vec2 locations[NUMBER_OF_LIGHTS] = {
-		glm::vec2{1.0f, 1.0f},
-		glm::vec2{10.0f, 10.0f}
-	};
+	std::vector<glm::vec2> m_locations;
+	std::vector<glm::mat4> m_locationsMatrices;
 
 	void initPointLights();
+	void initObject();
+	void initMatrices();
+
 	float randomFloat() const;
 };

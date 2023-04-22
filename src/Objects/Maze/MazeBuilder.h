@@ -12,11 +12,13 @@ public:
 
 	void readLocations(const char* mazePath);
 
-	glm::mat4* getWallsLocationMatrices();
+	std::vector<glm::mat4>& getWallsLocationMatrices();
 	const std::vector<glm::vec2>& getWallsXZLocations() const;
 	glm::vec3 getWallSize() const;
-
 	int getWallAmount() const;
+
+	std::vector<glm::vec2> getRandomLightPositions(int quantity) const;
+
 	float getWidth() const;
 	float getHeight() const;
 
@@ -29,4 +31,5 @@ private:
 	std::vector<glm::vec2> m_wallsXZLocations; // Left top point of rectangle
 
 	glm::mat4 calculateModel(int xOffset, int zOffset) const;
+	bool isWall(const glm::vec2& location) const;
 };

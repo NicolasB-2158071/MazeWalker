@@ -30,9 +30,9 @@ public:
 
 private:
 	// LookAt parameters
-	glm::vec3 m_cameraPos;
-	glm::vec3 m_cameraFront;
-	glm::vec3 m_cameraUp;
+	glm::vec3 m_cameraPos = glm::vec3{ 0.0f, 0.5f, 0.0f };
+	glm::vec3 m_cameraFront = glm::vec3{ 0.0f, 0.0f, 1.0f };
+	glm::vec3 m_cameraUp = glm::vec3{ 0.0f, 1.0f, 0.0f };
 
 	glm::mat4 m_projectionMatrix;
 
@@ -40,16 +40,16 @@ private:
 	glm::vec2 m_oldPos;
 
 	// Mouse variables
-	bool m_firstMouse;
+	bool m_firstMouse = true;
 	float m_lastX;
 	float m_lastY;
-	float m_yaw;
-	float m_pitch;
+	float m_yaw = 90.0f;
+	float m_pitch = 0.0f;
 	void initCameraInputs(EventManager* eventManager);
 
 	// Sensitivy variables
-	float m_cameraSpeed;
-	float m_mouseSpeed;
+	float m_cameraSpeed = 2.5f;
+	float m_mouseSpeed = 0.1f;
 
 	// Jumping vars
 	float m_gravity = 0.001f;
