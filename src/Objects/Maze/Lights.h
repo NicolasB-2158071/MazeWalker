@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 #include "../../Renderer/Renderer.h"
@@ -44,10 +45,16 @@ private:
 	std::vector<glm::vec2> m_locations;
 	std::vector<glm::mat4> m_locationsMatrices;
 
+	sf::Sound m_chimeSound;
+	sf::SoundBuffer buffer;
+
 	Camera* m_camera = nullptr;
 
 	void handleRay(const glm::vec3& ray); // checkt op collision + doet aanpassing
 
+	void setRandomLightColour(int pointLightNumber);
+
+	void initAudio();
 	void initPointLights();
 	void initObject();
 	void initMatrices();

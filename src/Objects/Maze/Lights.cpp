@@ -8,9 +8,11 @@
 
 Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_shader{ "src/Shaders/tempVShader.vs", "src/Shaders/tempFShader.fs" }
 {
+	srand(time(0));
 	m_shader.use();
 	m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
 	m_shader.bindUniformBlock("PointLightBlock", POINTLIGHT_BLOCK);
+	initAudio();
 }
 
 void Lights::setLocations(const std::vector<glm::vec2>& locations)
@@ -42,7 +44,6 @@ void Lights::initLightsInput(EventManager* eventManager)
 
 void Lights::initPointLights()
 {
-	srand(time(0));
 	m_lightBuffer.bind();
 	unsigned int offset{};
 	for (int i = 0; i < NUMBER_OF_LIGHTS; ++i)
@@ -50,7 +51,7 @@ void Lights::initPointLights()
 		PointLight pl{};
 		pl.position = glm::vec3{ m_locations[i].x, 0.5f, m_locations[i].y };
 		//pl.ambient = glm::vec3{ glm::vec3{ 0.8f /* + randomFloat() / 3*/, 0.8f /* + randomFloat() / 3*/, 0.8f /* + randomFloat() / 3*/}}; // Colour
-		pl.ambient = glm::vec3{ glm::vec3{ 0.8f + randomFloat() / 3, 0.8f + randomFloat() / 3, 0.8f + randomFloat() / 3} }; // Colour
+		pl.ambient = glm::vec3{  glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat() } }; // Colour
 		pl.diffuse = glm::vec3{ glm::vec3{ randomFloat(), randomFloat(), randomFloat() } };
 		pl.specular = glm::vec3{ glm::vec3{ randomFloat(), randomFloat(), randomFloat()} };
 		pl.Kc = 1.0f;
@@ -73,18 +74,18 @@ void Lights::initObject()
 	initMatrices();
     // LBB (0) - LBT (1) - RBB (2) - RBT (3)
     // LFB (4) - LFT (5) - RFB (6) - RFT (7)
-    float vertices[] = {
-        // Pos
-       -1.0f, -1.0f, -1.0f,
-       -1.0f,  1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f,  1.0f, -1.0f,
+	float vertices[] = {
+		// Pos
+		0.0f,  0.0f,  0.0f,
+	    0.0f,  1.0f,  0.0f,
+		1.0f,  0.0f,  0.0f,
+		1.0f,  1.0f,  0.0f,
 
-       -1.0f, -1.0f,  1.0f,
-       -1.0f,  1.0f,  1.0f,
-        1.0f, -1.0f,  1.0f,
-        1.0f,  1.0f,  1.0f
-    };
+	    0.0f,  0.0f,  1.0f,
+	    0.0f,  1.0f,  1.0f,
+		1.0f,  0.0f,  1.0f,
+		1.0f,  1.0f,  1.0f
+	};
 
     unsigned int indices[] = {
         0, 1, 2, 1, 3, 2, // Behind (LBB - LBT - RBB - LBT - RBT - RBB)
@@ -120,21 +121,51 @@ void Lights::initMatrices()
 	}
 }
 
-// https://antongerdelan.net/opengl/images/raysphere.png, simpel sphere collision (better would be AABB ;))
+void Lights::initAudio()
+{
+	if (!buffer.loadFromFile("res/Audio/Fairy_Cmin.wav"))
+	{
+		std::cout << "ERROR loading light sound";
+		return;
+	}
+	m_chimeSound.setBuffer(buffer);
+	m_chimeSound.setPosition(2.f, 0.f, -5.f);
+	m_chimeSound.setRelativeToListener(true);
+	m_chimeSound.setMinDistance(5.f);
+	m_chimeSound.setAttenuation(10.0f);
+}
+
+void Lights::setRandomLightColour(int pointLightNumber)
+{
+	m_lightBuffer.bind();
+	glm::vec3 colour{ glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat()} };
+	m_lightBuffer.addData(80 * pointLightNumber + 16, 16, &colour);
+}
+
+// https://antongerdelan.net/opengl/images/raysphere.png simpel sphere collision (better would be AABB)
 void Lights::handleRay(const glm::vec3& ray)
 {
 	glm::vec3 origin{ m_camera->getCameraPos() };
-	float radius{ 0.8f }; // hardcoded
+	float radius{ 0.1f }; // hardcoded
+	int lightNumber{};
 
 	// Check for all lights if there is a collision
 	for (auto& location : m_locations)
 	{
-		glm::vec3 center{ location.x + 0.1f, 1.0f, location.y + 0.1f }; // light size = 0.1f
-		float b{ glm::dot(ray, origin - glm::vec3{location.x, 1.0f, location.y}) };
+		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
+		float b{ glm::dot(ray, origin - center) };
 		float c{glm::dot((origin - center), (origin - center)) - radius * radius};
 		
-		if (b * b - c >= 0)
-			std::cout << "collision" << std::endl;
+		// Check collision
+		float length{ glm::length(center - origin) }; // Max range
+		if (length < 3.0f && b * b - c >= 0)
+		{
+			m_chimeSound.stop(); // Rewind
+			//m_chimeSound.setPosition(center.x, center.y, center.z);
+			m_chimeSound.play();
+			setRandomLightColour(lightNumber);
+		}
+		++lightNumber;
 	}
 }
 

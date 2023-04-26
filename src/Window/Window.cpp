@@ -74,9 +74,10 @@ void Window::initWindowCallbacks()
                 manager->callbackEvent(EventType::WINDOW_FOCUS, EventInfo{});
             else
             {
-                double xpos, ypos;
-                glfwGetCursorPos(window, &xpos, &ypos);
-                manager->callbackEvent(EventType::MOUSE_CLICK, MouseMovementInfo{xpos, ypos});
+                // Picking -> always crosshair at the middle (TODO draw using Opengl)
+                int centerx, centery;
+                glfwGetWindowSize(window, &centerx, &centery);
+                manager->callbackEvent(EventType::MOUSE_CLICK, MouseMovementInfo{ static_cast<double>(centerx / 2), static_cast<double>(centery / 2)});
             }
         }
     });

@@ -67,6 +67,11 @@ glm::vec3 Camera::getCameraPos() const
     return m_cameraPos;
 }
 
+glm::vec3 Camera::getCameraDirection() const
+{
+    return m_cameraFront;
+}
+
 glm::vec2 Camera::getXZPosition() const
 {
     return glm::vec2{m_cameraPos.x, m_cameraPos.z};

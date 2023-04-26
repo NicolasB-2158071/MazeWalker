@@ -1,5 +1,7 @@
 #include "MazeWalker.h"
 
+#include <SFML/Audio.hpp>
+
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
@@ -25,6 +27,14 @@ void MazeWalker::run()
     {
         updateDeltaTime();
         processKeyBoardMovement();
+
+        //glm::vec3 cP{ m_camera.getCameraPos() };
+        //glm::vec3 cD{ m_camera.getCameraDirection() };
+       /* sf::Listener::setPosition(cP.x, cP.y, cP.z);
+        sf::Listener::setDirection(cD.x, cD.y, cD.z);*/
+        sf::Listener::setPosition(10.f, 0.f, 5.f);
+        sf::Listener::setDirection(1.f, 0.f, 0.f);
+        sf::Listener::setUpVector(1.f, 1.f, 0.f);
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,11 +84,6 @@ void MazeWalker::initApplicationInputs()
     
     m_eventManager.registerCallback(EventType::WINDOW_FOCUS, [this](EventInfo& info)
     {
-        //if (m_focus)
-        //{
-        //    glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_FILL : GL_LINE);
-        //    m_wireframe = !m_wireframe;
-        //}
         m_focus = true;
         m_camera.newFocus();
         m_window.setCursorFocus(true);

@@ -19,6 +19,7 @@ public:
 	glm::mat4 getProjectionMatrix() const;
 
 	glm::vec3 getCameraPos() const;
+	glm::vec3 getCameraDirection() const;
 	glm::vec2 getXZPosition() const;
 	void rewindCamera();
 
