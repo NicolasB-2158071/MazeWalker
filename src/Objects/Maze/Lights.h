@@ -45,19 +45,27 @@ private:
 	std::vector<glm::vec2> m_locations;
 	std::vector<glm::mat4> m_locationsMatrices;
 
+	glm::vec3 m_lightColours[NUMBER_OF_LIGHTS];
+	bool m_lightsOn[NUMBER_OF_LIGHTS] = { true };
+
 	sf::Sound m_chimeSound;
 	sf::SoundBuffer buffer;
 
 	Camera* m_camera = nullptr;
 
-	void handleRay(const glm::vec3& ray); // checkt op collision + doet aanpassing
+	// https://antongerdelan.net/opengl/images/raysphere.png simpel sphere collision (better would be AABB)
+	void handleRightClickPicking(double mouseX, double mouseY);
+	void handleLeftClickPicking(double mouseX, double mouseY);
 
-	void setRandomLightColour(int pointLightNumber);
+	bool isPickingCollision(const glm::vec3& ray, const glm::vec3& origin, const glm::vec3& center) const;
+
+	void setLightColour(int pointLightNumber, const glm::vec3& colour);
 
 	void initAudio();
 	void initPointLights();
 	void initObject();
 	void initMatrices();
 
+	// https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/
 	float randomFloat() const;
 };
