@@ -20,9 +20,24 @@ void Lights::setLocations(const std::vector<glm::vec2>& locations)
 	initObject();
 }
 
+void Lights::setCamera(Camera* camera)
+{
+	m_camera = camera;
+}
+
 void Lights::draw(Renderer& renderer)
 {
 	renderer.drawLights(m_vao, m_shader, NUMBER_OF_LIGHTS);
+}
+
+void Lights::initLightsInput(EventManager* eventManager)
+{
+	eventManager->registerCallback(EventType::MOUSE_CLICK, [this](EventInfo& info)
+	{
+		MouseMovementInfo& mouseInfo{ static_cast<MouseMovementInfo&>(info) };
+		glm::vec3 ray{ m_camera->calculateRayVector(mouseInfo.xpos, mouseInfo.ypos) };
+		handleRay(ray);
+	});
 }
 
 void Lights::initPointLights()
@@ -105,6 +120,23 @@ void Lights::initMatrices()
 	}
 }
 
+// https://antongerdelan.net/opengl/images/raysphere.png, simpel sphere collision (better would be AABB ;))
+void Lights::handleRay(const glm::vec3& ray)
+{
+	glm::vec3 origin{ m_camera->getCameraPos() };
+	float radius{ 0.8f }; // hardcoded
+
+	// Check for all lights if there is a collision
+	for (auto& location : m_locations)
+	{
+		glm::vec3 center{ location.x + 0.1f, 1.0f, location.y + 0.1f }; // light size = 0.1f
+		float b{ glm::dot(ray, origin - glm::vec3{location.x, 1.0f, location.y}) };
+		float c{glm::dot((origin - center), (origin - center)) - radius * radius};
+		
+		if (b * b - c >= 0)
+			std::cout << "collision" << std::endl;
+	}
+}
 
 // https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/
 float Lights::randomFloat() const

@@ -17,6 +17,8 @@ public:
 
 	bool isWallColision(const glm::vec2& cameraPos) const;
 
+	Lights& getLights();
+
 private:
 	MazeBuilder m_builder;
 	Floor m_floor;

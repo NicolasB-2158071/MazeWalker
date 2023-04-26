@@ -30,11 +30,11 @@ public:
 
 	Lights();
 	void setLocations(const std::vector<glm::vec2>& locations);
+	void setCamera(Camera* camera);
 
 	void draw(Renderer& renderer);
 
-	// Gegeven point light locaties (mazebuilder) -> set point lights (met random waardes)
-	// tekent ook via instancing de punten (via model)
+	void initLightsInput(EventManager* eventManager);
 
 private:
 	UniformBuffer m_lightBuffer;
@@ -43,6 +43,10 @@ private:
 
 	std::vector<glm::vec2> m_locations;
 	std::vector<glm::mat4> m_locationsMatrices;
+
+	Camera* m_camera = nullptr;
+
+	void handleRay(const glm::vec3& ray); // checkt op collision + doet aanpassing
 
 	void initPointLights();
 	void initObject();

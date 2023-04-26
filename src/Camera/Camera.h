@@ -18,6 +18,7 @@ public:
 	glm::mat4 getViewMatrix() const;
 	glm::mat4 getProjectionMatrix() const;
 
+	glm::vec3 getCameraPos() const;
 	glm::vec2 getXZPosition() const;
 	void rewindCamera();
 
@@ -26,15 +27,18 @@ public:
 
 	void newFocus(); // firstMouse
 
-	// In window setFocus (geen processing doet)
+	glm::vec3 calculateRayVector(double mouseXpos, double mouseYpos) const;
 
 private:
 	// LookAt parameters
 	glm::vec3 m_cameraPos = glm::vec3{ 0.0f, 0.5f, 0.0f };
 	glm::vec3 m_cameraFront = glm::vec3{ 0.0f, 0.0f, 1.0f };
-	glm::vec3 m_cameraUp = glm::vec3{ 0.0f, 1.0f, 0.0f };
+	glm::vec3 m_cameraUp = glm::vec3{ 0.0f, 1.0f, 0.0f }; // Switched camera looking to behind!!
 
+	// Window parameters
 	glm::mat4 m_projectionMatrix;
+	float m_windowWidth;
+	float m_windowHeight;
 
 	// For collision
 	glm::vec2 m_oldPos;

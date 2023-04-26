@@ -67,11 +67,17 @@ void Window::initWindowCallbacks()
     });
    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods)
     {
-        // Wel moeilijk als scherm focust heeft voor interactie!!
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         {
             EventManager* manager{ static_cast<EventManager*>(glfwGetWindowUserPointer(window)) };
-            manager->callbackEvent(EventType::WINDOW_FOCUS, EventInfo{});
+            if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL)
+                manager->callbackEvent(EventType::WINDOW_FOCUS, EventInfo{});
+            else
+            {
+                double xpos, ypos;
+                glfwGetCursorPos(window, &xpos, &ypos);
+                manager->callbackEvent(EventType::MOUSE_CLICK, MouseMovementInfo{xpos, ypos});
+            }
         }
     });
 }

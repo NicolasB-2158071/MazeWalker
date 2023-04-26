@@ -8,6 +8,9 @@ m_renderer{ m_camera }, m_running { m_window.SUCCESS }
     m_maze = std::make_unique<Maze>();
     m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
 
+    m_maze->getLights().setCamera(&m_camera);
+    m_maze->getLights().initLightsInput(&m_eventManager);
+
     initApplicationInputs();
 }
 
@@ -17,7 +20,6 @@ void MazeWalker::run()
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     while (m_running)
     {
@@ -69,14 +71,14 @@ void MazeWalker::initApplicationInputs()
     {
         glViewport(0, 0, static_cast<WindowResizeInfo&>(info).width, static_cast<WindowResizeInfo&>(info).height);
     });
-    // WORDT STEEDS BIJ EEN CLICK OPGEROEPEN!!!
+    
     m_eventManager.registerCallback(EventType::WINDOW_FOCUS, [this](EventInfo& info)
     {
-        if (m_focus)
-        {
-            glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_FILL : GL_LINE);
-            m_wireframe = !m_wireframe;
-        }
+        //if (m_focus)
+        //{
+        //    glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_FILL : GL_LINE);
+        //    m_wireframe = !m_wireframe;
+        //}
         m_focus = true;
         m_camera.newFocus();
         m_window.setCursorFocus(true);

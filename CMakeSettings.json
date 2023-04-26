@@ -9,7 +9,44 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": ""
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "SFML_DIR",
+          "value": "",
+          "type": "PATH"
+        },
+        {
+          "name": "OGG_LIBRARY",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/lib/sfml-audio.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "OPENAL_LIBRARY",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/lib/sfml-audio.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "SFML_INCLUDE_DIR",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/includes",
+          "type": "PATH"
+        },
+        {
+          "name": "VORBIS_LIBRARY",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/lib/sfml-audio.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "VORBISENC_LIBRARY",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/lib/sfml-audio.lib",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "VORBISFILE_LIBRARY",
+          "value": "C:/Users/nicol/Documents/Hoger Onderwijs/Projecten/CG/lib/sfml-audio.lib",
+          "type": "FILEPATH"
+        }
+      ]
     }
   ]
 }
