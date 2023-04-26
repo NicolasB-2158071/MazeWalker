@@ -9,7 +9,7 @@
 !/includes/.gitkeep
 
 # lib
-/lib/*
+/lib/glfw3.lib
 !/lib/.gitkeep
 
 # out
