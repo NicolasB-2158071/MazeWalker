@@ -129,16 +129,15 @@ void Lights::initMatrices()
 
 void Lights::initAudio()
 {
-	//if (!buffer.loadFromFile("res/Audio/Fairy_Cmin.wav"))
+	//if (!m_buffer.loadFromFile("res/Audio/newTest.wav"))
 	//{
 	//	std::cout << "ERROR loading light sound";
 	//	return;
 	//}
-	//m_chimeSound.setBuffer(buffer);
-	//m_chimeSound.setPosition(2.f, 0.f, -5.f);
+	//m_chimeSound.setBuffer(m_buffer);
 	//m_chimeSound.setRelativeToListener(true);
-	//m_chimeSound.setMinDistance(5.f);
-	//m_chimeSound.setAttenuation(10.0f);
+	//m_chimeSound.setMinDistance(3.0f);
+	//m_chimeSound.setAttenuation(30.0f);
 }
 
 bool Lights::isPickingCollision(const glm::vec3& ray, const glm::vec3& origin, const glm::vec3& center) const
@@ -172,7 +171,9 @@ void Lights::handleLeftClickPicking(double mouseX, double mouseY)
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
 		if (isPickingCollision(ray, origin, center))
 		{
-			// Sound
+			//m_chimeSound.setPosition(center.x, center.y, center.z);
+			//m_chimeSound.stop(); // Rewind
+			//m_chimeSound.play();
 			setLightColour(lightNumber, m_lightsOn[lightNumber] ? m_lightColours[lightNumber] : glm::vec3{0.0f, 0.0f, 0.0f}); // Off/On
 			m_lightsOn[lightNumber] = !m_lightsOn[lightNumber];
 		}
@@ -205,7 +206,3 @@ float Lights::randomFloat() const
 {
 	return (float)(rand()) / (float)(RAND_MAX);
 }
-
-//m_chimeSound.stop(); // Rewind
-////m_chimeSound.setPosition(center.x, center.y, center.z);
-//m_chimeSound.play();

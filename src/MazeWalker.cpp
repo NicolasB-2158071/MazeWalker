@@ -1,5 +1,8 @@
 #include "MazeWalker.h"
 
+#include <SFML/Audio.hpp>
+#include <SFML/Audio/Listener.hpp>
+
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
@@ -25,6 +28,12 @@ void MazeWalker::run()
     {
         updateDeltaTime();
         processKeyBoardMovement();
+
+        glm::vec3 cP{ m_camera.getCameraPos() };
+        glm::vec3 cD{ m_camera.getCameraDirection() };
+
+        sf::Listener::setPosition(cP.x, cP.y, cP.z);
+        sf::Listener::setDirection(cD.x, cD.y, cD.z);
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

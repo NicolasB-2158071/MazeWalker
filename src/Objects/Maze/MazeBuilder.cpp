@@ -117,3 +117,17 @@ bool MazeBuilder::isWall(const glm::vec2& location) const
 	}
 	return false;
 }
+
+
+/*
+*  Generates a maze using prim's algorithm
+        Pseudo code:
+        1. All cells are assumed to be walls
+        2. Pick cell (x, y) at random and set it to passage
+        3. Get frontier fs of (x, y) and add to set s that contains all frontier cells
+        4. while s is not empty:
+            4a. Pick a random cell (x, y) from s and remove it from s
+            4b. Get neighbours ns of (x, y)
+            4c. Connect (x, y) with random neighbour (nx, ny) from ns
+            4d. Add the frontier fs of (x, y) to s
+*/

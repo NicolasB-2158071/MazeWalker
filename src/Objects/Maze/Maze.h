@@ -30,5 +30,5 @@ private:
 	const std::vector<glm::vec2>& m_wallsXZLocations;
 	glm::vec3 m_wallSize;
 
-	const static int OFFSET = 0.15f;
+	const float OFFSET = 0.15f;
 };

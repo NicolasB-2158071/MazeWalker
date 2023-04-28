@@ -48,8 +48,8 @@ private:
 	glm::vec3 m_lightColours[NUMBER_OF_LIGHTS];
 	bool m_lightsOn[NUMBER_OF_LIGHTS] = { true };
 
-	sf::Sound m_chimeSound;
-	sf::SoundBuffer buffer;
+	//sf::Sound m_chimeSound;
+	//sf::SoundBuffer m_buffer;
 
 	Camera* m_camera = nullptr;
 
