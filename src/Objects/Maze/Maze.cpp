@@ -7,6 +7,8 @@ Maze::Maze() : m_builder{ glm::vec3{1.0f, 2.0f, 1.0f } }, m_wallsXZLocations{m_b
 	m_floor.initObject(m_builder.getWidth(), m_builder.getHeight());
 	m_walls.initObject(m_builder.getWallAmount(), m_builder.getWallsLocationMatrices());
 	m_lights.setLocations(m_builder.getRandomLightPositions(Lights::NUMBER_OF_LIGHTS));
+
+	initAudio();
 }
 
 void Maze::draw(Renderer& renderer)
@@ -32,4 +34,19 @@ bool Maze::isWallColision(const glm::vec2& cameraPos) const
 Lights& Maze::getLights()
 {
 	return m_lights;
+}
+
+// TODO place at end position
+void Maze::initAudio()
+{
+	if (!m_backgroundMusic.openFromFile("res/Audio/Ambient.wav"))
+	{
+		std::cout << "ERROR loading background sound";
+		return;
+	}
+	m_backgroundMusic.setPosition(m_builder.getWidth(), 2.0f, m_builder.getHeight());
+	m_backgroundMusic.setMinDistance(10.0f);
+	m_backgroundMusic.setLoop(true);
+	m_backgroundMusic.setVolume(50.0f);
+	m_backgroundMusic.play();
 }

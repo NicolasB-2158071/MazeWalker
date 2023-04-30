@@ -2,8 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 
-Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 },
-    m_windowWidth{windowWidth}, m_windowHeight{windowHeight}
+Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }
 {
     m_projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f);
     initCameraInputs(eventManager);
@@ -96,29 +95,6 @@ void Camera::setMouseSpeed(float mouseSpeed)
 void Camera::newFocus()
 {
     m_firstMouse = true;
-}
-
-// Heavily inspired by: https://antongerdelan.net/opengl/raycasting.html
-glm::vec3 Camera::calculateRayVector(double mouseXpos, double mouseYpos) const
-{
-    // NDC + homogeneous clip coordinates
-    glm::vec4 newRayTemp
-    {
-        (2.0f * mouseXpos) / m_windowWidth - 1.0f,
-         1.0f - (2.0f * mouseYpos) / m_windowHeight,
-        -1.0f,
-         1.0f
-    };
-
-    // Eye camera coordinates
-    newRayTemp = glm::inverse(m_projectionMatrix) * newRayTemp;
-    newRayTemp = glm::vec4(newRayTemp.x, newRayTemp.y, -1.0f, 0.0f);
-
-    // World coordinates
-    glm::vec3 newRay{ glm::inverse(getViewMatrix()) * newRayTemp };
-    newRay = glm::normalize(newRay);
-
-    return newRay;
 }
 
 void Camera::initCameraInputs(EventManager* eventManager)

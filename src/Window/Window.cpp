@@ -74,18 +74,17 @@ void Window::initWindowCallbacks()
                 manager->callbackEvent(EventType::WINDOW_FOCUS, EventInfo{});
             else
             {
-                // Picking -> always crosshair at the middle (TODO draw using Opengl)
-                int centerx, centery;
-                glfwGetWindowSize(window, &centerx, &centery);
-                manager->callbackEvent(EventType::MOUSE_LEFT_CLICK, MouseMovementInfo{ static_cast<double>(centerx / 2), static_cast<double>(centery / 2)});
+                double mouseX, mouseY;
+                glfwGetCursorPos(window, &mouseX, &mouseY);
+                manager->callbackEvent(EventType::MOUSE_LEFT_CLICK, MouseMovementInfo{ mouseX, mouseY });
             }
         }
         else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
         {
             EventManager* manager{ static_cast<EventManager*>(glfwGetWindowUserPointer(window)) };
-            int centerx, centery;
-            glfwGetWindowSize(window, &centerx, &centery);
-            manager->callbackEvent(EventType::MOUSE_RIGHT_CLICK, MouseMovementInfo{ static_cast<double>(centerx / 2), static_cast<double>(centery / 2) });
+            double mouseX, mouseY;
+            glfwGetCursorPos(window, &mouseX, &mouseY);
+            manager->callbackEvent(EventType::MOUSE_RIGHT_CLICK, MouseMovementInfo{ mouseX, mouseY });
         }
     });
 }

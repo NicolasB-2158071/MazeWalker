@@ -6,12 +6,11 @@
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
-m_renderer{ m_camera }, m_running { m_window.SUCCESS }
+m_interactionHandler{ windowWidth, windowHeight, m_camera}, m_renderer{m_camera}, m_running{m_window.SUCCESS}
 {
     m_maze = std::make_unique<Maze>();
     m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
 
-    m_maze->getLights().setCamera(&m_camera);
     m_maze->getLights().initLightsInput(&m_eventManager);
 
     initApplicationInputs();
@@ -41,7 +40,6 @@ void MazeWalker::run()
         m_renderer.prepare(); // View matrix
 
         m_maze->draw(m_renderer);
-        // Models
         m_skybox->draw(m_renderer); // Draw always as last
 
         m_window.update();
@@ -78,7 +76,9 @@ void MazeWalker::initApplicationInputs()
     m_eventManager.registerCallback(EventType::WINDOW_CLOSE, [this](EventInfo& info) {m_running = false; });
     m_eventManager.registerCallback(EventType::WINDOW_RESIZE, [this](EventInfo& info)
     {
-        glViewport(0, 0, static_cast<WindowResizeInfo&>(info).width, static_cast<WindowResizeInfo&>(info).height);
+        WindowResizeInfo& resizeInfo{ static_cast<WindowResizeInfo&>(info) };
+        m_interactionHandler.setWindowDimensions(resizeInfo.width, resizeInfo.height);
+        glViewport(0, 0, resizeInfo.width, resizeInfo.height);
     });
     
     m_eventManager.registerCallback(EventType::WINDOW_FOCUS, [this](EventInfo& info)

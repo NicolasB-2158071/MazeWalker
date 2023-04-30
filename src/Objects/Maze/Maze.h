@@ -30,5 +30,8 @@ private:
 	const std::vector<glm::vec2>& m_wallsXZLocations;
 	glm::vec3 m_wallSize;
 
-	const float OFFSET = 0.15f;
+	const float OFFSET = 0.10f;
+
+	sf::Music m_backgroundMusic;
+	void initAudio();
 };

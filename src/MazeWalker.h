@@ -2,6 +2,7 @@
 
 #include "Window/Window.h"
 #include "Camera/Camera.h"
+#include "Camera/InteractionHandler.h"
 #include "EventManager/EventManager.h"
 #include "Renderer/Renderer.h"
 
@@ -20,6 +21,7 @@ private:
 	EventManager m_eventManager;
 	Window m_window;
 	Camera m_camera;
+	InteractionHandler m_interactionHandler;
 	Renderer m_renderer;
 
 	std::unique_ptr<Maze> m_maze;

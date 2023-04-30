@@ -28,8 +28,6 @@ public:
 
 	void newFocus(); // firstMouse
 
-	glm::vec3 calculateRayVector(double mouseXpos, double mouseYpos) const;
-
 private:
 	// LookAt parameters
 	glm::vec3 m_cameraPos = glm::vec3{ 0.0f, 0.5f, 0.0f };
@@ -38,8 +36,6 @@ private:
 
 	// Window parameters
 	glm::mat4 m_projectionMatrix;
-	float m_windowWidth;
-	float m_windowHeight;
 
 	// For collision
 	glm::vec2 m_oldPos;

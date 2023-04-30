@@ -4,10 +4,14 @@
 #include "../../Buffers/IndexBuffer.h"
 #include "../../Buffers/VertexBuffer.h"
 
+#include "../../Camera/InteractionHandler.h"
+
 #include <random>
 
 Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_shader{ "src/Shaders/tempVShader.vs", "src/Shaders/tempFShader.fs" }
 {
+	std::fill_n(m_lightsOn, NUMBER_OF_LIGHTS, true);
+
 	srand(time(0));
 	m_shader.use();
 	m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
@@ -22,11 +26,6 @@ void Lights::setLocations(const std::vector<glm::vec2>& locations)
 	initObject();
 }
 
-void Lights::setCamera(Camera* camera)
-{
-	m_camera = camera;
-}
-
 void Lights::draw(Renderer& renderer)
 {
 	renderer.drawLights(m_vao, m_shader, NUMBER_OF_LIGHTS);
@@ -37,12 +36,11 @@ void Lights::initLightsInput(EventManager* eventManager)
 	eventManager->registerCallback(EventType::MOUSE_LEFT_CLICK, [this](EventInfo& info)
 	{
 		MouseMovementInfo& mouseInfo{ static_cast<MouseMovementInfo&>(info) };
-		handleLeftClickPicking(mouseInfo.xpos, mouseInfo.ypos);
+		handleLeftClickPicking(); // Always from center for clicking
 	});
 	eventManager->registerCallback(EventType::MOUSE_RIGHT_CLICK, [this](EventInfo& info)
 	{
-		MouseMovementInfo& mouseInfo{ static_cast<MouseMovementInfo&>(info) };
-		handleRightClickPicking(mouseInfo.xpos, mouseInfo.ypos);
+		handleRightClickPicking(); // Always from center for clicking
 	});
 }
 
@@ -129,28 +127,14 @@ void Lights::initMatrices()
 
 void Lights::initAudio()
 {
-	//if (!m_buffer.loadFromFile("res/Audio/newTest.wav"))
-	//{
-	//	std::cout << "ERROR loading light sound";
-	//	return;
-	//}
-	//m_chimeSound.setBuffer(m_buffer);
-	//m_chimeSound.setRelativeToListener(true);
-	//m_chimeSound.setMinDistance(3.0f);
-	//m_chimeSound.setAttenuation(30.0f);
-}
-
-bool Lights::isPickingCollision(const glm::vec3& ray, const glm::vec3& origin, const glm::vec3& center) const
-{
-	float radius{ 0.1f }; // hardcoded
-	float b{ glm::dot(ray, origin - center) };
-	float c{ glm::dot((origin - center), (origin - center)) - radius * radius };
-
-	// Check collision
-	float length{ glm::length(center - origin) }; // Max range
-	if (length < 3.0f && b * b - c >= 0)
-		return true;
-	return false;
+	if (!m_buffer.loadFromFile("res/Audio/LightsOnOff.wav"))
+	{
+		std::cout << "ERROR loading light sound";
+		return;
+	}
+	m_chimeSound.setBuffer(m_buffer);
+	m_chimeSound.setMinDistance(3.0f);
+	m_chimeSound.setAttenuation(10.0f);
 }
 
 void Lights::setLightColour(int pointLightNumber, const glm::vec3& colour)
@@ -159,43 +143,42 @@ void Lights::setLightColour(int pointLightNumber, const glm::vec3& colour)
 	m_lightBuffer.addData(80 * pointLightNumber + 16, 16, &colour);
 }
 
-void Lights::handleLeftClickPicking(double mouseX, double mouseY)
+void Lights::handleLeftClickPicking()
 {
-	glm::vec3 ray{ m_camera->calculateRayVector(mouseX, mouseY) };
-	glm::vec3 origin{ m_camera->getCameraPos() };
-	int lightNumber{};
+	InteractionHandler* ih{ InteractionHandler::getInstance() };
+	glm::vec3 ray{ ih->calculateRayVectorFromCenter()};
 
 	// Check for all lights if there is a collision
+	int lightNumber{};
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (isPickingCollision(ray, origin, center))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 3.0f))
 		{
-			//m_chimeSound.setPosition(center.x, center.y, center.z);
-			//m_chimeSound.stop(); // Rewind
-			//m_chimeSound.play();
-			setLightColour(lightNumber, m_lightsOn[lightNumber] ? m_lightColours[lightNumber] : glm::vec3{0.0f, 0.0f, 0.0f}); // Off/On
+			m_chimeSound.setPosition(center.x, center.y, center.z);
+			m_chimeSound.stop(); // Rewind
+			m_chimeSound.play();
+			setLightColour(lightNumber, m_lightsOn[lightNumber] ? glm::vec3{ 0.0f, 0.0f, 0.0f } : m_lightColours[lightNumber]); // Off/On
 			m_lightsOn[lightNumber] = !m_lightsOn[lightNumber];
 		}
 		++lightNumber;
 	}
 }
 
-void Lights::handleRightClickPicking(double mouseX, double mouseY)
+void Lights::handleRightClickPicking()
 {
-	glm::vec3 ray{ m_camera->calculateRayVector(mouseX, mouseY) };
-	glm::vec3 origin{ m_camera->getCameraPos() };
-	int lightNumber{};
+	InteractionHandler* ih{ InteractionHandler::getInstance() };
+	glm::vec3 ray{ ih->calculateRayVectorFromCenter() };
 
 	// Check for all lights if there is a collision
+	int lightNumber{};
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (isPickingCollision(ray, origin, center))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 3.0f))
 		{
-			// Sound
 			m_lightColours[lightNumber] = glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat() };
-			if (!m_lightsOn[lightNumber])
+			if (m_lightsOn[lightNumber])
 				setLightColour(lightNumber, m_lightColours[lightNumber]);
 		}
 		++lightNumber;
