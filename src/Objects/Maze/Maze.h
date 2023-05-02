@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MazeBuilder.h"
+#include "Generator/MazeBuilder.h"
 #include "Floor.h"
 #include "Walls.h"
 #include "Lights.h"

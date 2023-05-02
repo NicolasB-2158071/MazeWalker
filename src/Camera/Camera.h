@@ -30,7 +30,7 @@ public:
 
 private:
 	// LookAt parameters
-	glm::vec3 m_cameraPos = glm::vec3{ 0.0f, 0.5f, 0.0f };
+	glm::vec3 m_cameraPos = glm::vec3{ 0.1f, 0.5f, 0.1f };
 	glm::vec3 m_cameraFront = glm::vec3{ 0.0f, 0.0f, 1.0f };
 	glm::vec3 m_cameraUp = glm::vec3{ 0.0f, 1.0f, 0.0f }; // Switched camera looking to behind!!
 

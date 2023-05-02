@@ -1,9 +1,8 @@
 #include "Maze.h"
 
-Maze::Maze() : m_builder{ glm::vec3{1.0f, 2.0f, 1.0f } }, m_wallsXZLocations{m_builder.getWallsXZLocations()}, m_wallSize{ m_builder.getWallSize()}
+Maze::Maze() : m_builder{ glm::vec3{1.0f, 2.0f, 1.0f }/*, "res/mazes/maze.txt"*/ }, m_wallsXZLocations{m_builder.getWallsXZLocations()}, m_wallSize{m_builder.getWallSize()}
 {
 	// Init objects based on wallsize, width and height
-	m_builder.readLocations("res/mazes/maze.txt");
 	m_floor.initObject(m_builder.getWidth(), m_builder.getHeight());
 	m_walls.initObject(m_builder.getWallAmount(), m_builder.getWallsLocationMatrices());
 	m_lights.setLocations(m_builder.getRandomLightPositions(Lights::NUMBER_OF_LIGHTS));

@@ -5,7 +5,24 @@
 #include <sstream>
 #include <random>
 
-MazeBuilder::MazeBuilder(const glm::vec3& wallSize) : m_wallAmount{}, m_width{}, m_height{}, m_wallSize{ wallSize } {}
+
+// File meekrijg of niet (nullptr checken)
+MazeBuilder::MazeBuilder(const glm::vec3& wallSize, const char* mazeFile) : m_wallAmount{}, m_width{}, m_height{}, m_wallSize{ wallSize }, m_generator{ std::make_unique<PrimGenerator>() }
+{
+	if (mazeFile != nullptr)
+		readLocations(mazeFile);
+	else
+	{
+		m_width = 2, m_height = 2;
+		m_generator->generateMaze(m_width, m_height);
+		m_wallOffsets = m_generator->getWallLocations();
+		m_wallAmount = m_wallOffsets.size();
+		for (auto& offset : m_wallOffsets)
+			std::cout << offset.x << ' ' << offset.y << std::endl;
+	}
+	calculateXZLocations();
+	calculateLocationMatrices();
+}
 
 void MazeBuilder::readLocations(const char* mazePath)
 {
@@ -23,8 +40,7 @@ void MazeBuilder::readLocations(const char* mazePath)
 			{
 				if (c == '#')
 				{
-					m_wallLocatioMatrices.push_back(calculateModel(xOffset, zOffset));
-					m_wallsXZLocations.push_back(glm::vec2{ xOffset * m_wallSize.x, zOffset * m_wallSize.z});
+					m_wallOffsets.push_back(glm::vec2{ xOffset, zOffset });
 					++m_wallAmount;
 				}
 				++xOffset;
@@ -43,7 +59,7 @@ void MazeBuilder::readLocations(const char* mazePath)
 
 std::vector<glm::mat4>& MazeBuilder::getWallsLocationMatrices()
 {
-	return m_wallLocatioMatrices;
+	return m_wallLocationMatrices;
 }
 
 const std::vector<glm::vec2>& MazeBuilder::getWallsXZLocations() const
@@ -94,6 +110,18 @@ float MazeBuilder::getHeight() const
 	return m_height * m_wallSize.z;
 }
 
+void MazeBuilder::calculateXZLocations()
+{
+	for (auto& offset : m_wallOffsets)
+		m_wallsXZLocations.push_back(glm::vec2{ offset.x * m_wallSize.x, offset.y * m_wallSize.z });
+}
+
+void MazeBuilder::calculateLocationMatrices()
+{
+	for (auto& offset : m_wallOffsets)
+		m_wallLocationMatrices.push_back(calculateModel(offset.x, offset.y));
+}
+
 glm::mat4 MazeBuilder::calculateModel(int xOffset, int zOffset) const
 {
 	glm::mat4 model{ 1.0f };
@@ -119,15 +147,6 @@ bool MazeBuilder::isWall(const glm::vec2& location) const
 }
 
 
-/*
-*  Generates a maze using prim's algorithm
-        Pseudo code:
-        1. All cells are assumed to be walls
-        2. Pick cell (x, y) at random and set it to passage
-        3. Get frontier fs of (x, y) and add to set s that contains all frontier cells
-        4. while s is not empty:
-            4a. Pick a random cell (x, y) from s and remove it from s
-            4b. Get neighbours ns of (x, y)
-            4c. Connect (x, y) with random neighbour (nx, ny) from ns
-            4d. Add the frontier fs of (x, y) to s
-*/
+// Enkel x, z offsets
+// -> wallXZLocaties berekenen
+// -> WallLocationMatrices berekenen
