@@ -21,7 +21,7 @@ void Camera::processKeyboardMovement(Window::keyboardPresses presses, float delt
     if (presses.key_d_active)
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
 
-    processJumping(presses.key_space_active);
+    //processJumping(presses.key_space_active);
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)

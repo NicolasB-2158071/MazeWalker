@@ -10,7 +10,7 @@
 #include "../Textures/Texture.h"
 #include "../Textures/Cubemap.h"
 #include "../Shaders/Shader.h"
-
+#include "../Objects/Model.h"
 
 class Renderer
 {
@@ -24,7 +24,7 @@ public:
 	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);
 	void drawSkybox(const VertexArray& vao, const Shader& shader, const Cubemap& cubemap);
 
-	void drawLights(const VertexArray& vao, const Shader& shader, int amount);
+	void drawLights(Model& lightModel, const Shader& shader, int amount);
 
 private:
 	Camera& m_camera;

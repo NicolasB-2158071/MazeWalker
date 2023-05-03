@@ -10,7 +10,7 @@
 MazeBuilder::MazeBuilder(const glm::vec3& wallSize, const char* mazeFile) : m_wallAmount{}, m_width{}, m_height{}, m_wallSize{ wallSize }, m_generator{ std::make_unique<PrimGenerator>() }
 {
 	if (mazeFile != nullptr)
-		readLocations(mazeFile);
+		readLocations(mazeFile); // width, height, wallamount also in this function
 	else
 	{
 		int tileWidth = 10, tileHeight = 15;
