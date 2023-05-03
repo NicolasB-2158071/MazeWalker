@@ -8,10 +8,9 @@
 
 #include <random>
 
-Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_shader{ "src/Shaders/tempVShader.vs", "src/Shaders/tempFShader.fs" }
+Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_shader{ "src/Shaders/LightsVShader.vs", "src/Shaders/LightsFShader.fs" }
 {
 	std::fill_n(m_lightsOn, NUMBER_OF_LIGHTS, true);
-
 	srand(time(0));
 	m_shader.use();
 	m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
@@ -28,7 +27,7 @@ void Lights::setLocations(const std::vector<glm::vec2>& locations)
 
 void Lights::draw(Renderer& renderer)
 {
-	renderer.drawLights(m_vao, m_shader, NUMBER_OF_LIGHTS);
+	renderer.drawLights(m_lightModel, m_shader, NUMBER_OF_LIGHTS);
 }
 
 void Lights::initLightsInput(EventManager* eventManager)
@@ -76,41 +75,8 @@ void Lights::initPointLights()
 void Lights::initObject()
 {
 	initMatrices();
-    // LBB (0) - LBT (1) - RBB (2) - RBT (3)
-    // LFB (4) - LFT (5) - RFB (6) - RFT (7)
-	float vertices[] = {
-		// Pos
-		0.0f,  0.0f,  0.0f,
-	    0.0f,  1.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
-		1.0f,  1.0f,  0.0f,
-
-	    0.0f,  0.0f,  1.0f,
-	    0.0f,  1.0f,  1.0f,
-		1.0f,  0.0f,  1.0f,
-		1.0f,  1.0f,  1.0f
-	};
-
-    unsigned int indices[] = {
-        0, 1, 2, 1, 3, 2, // Behind (LBB - LBT - RBB - LBT - RBT - RBB)
-        4, 5, 6, 5, 7, 6, // Front (LFB - LFT - RFB - LFT - RFT - RFB)
-        4, 0, 5, 1, 5, 0, // Left (LFB - LBB - LFT - LBT - LFT - LBB)
-        6, 2, 7, 3, 7, 2, // Right (RFB - RBB - RFT - RBT - RFT - RBB)
-        4, 6, 0, 0, 6, 2, // Bottom (LFB - RFB - LBB - LBB - RFB - RBB)
-        5, 7, 1, 1, 7, 3 // Top (LFT - RFT - LBT - LBT - RFT - RBT)
-    };
-
-    VertexBuffer vbo{ vertices, sizeof(vertices) };
-    VertexBufferLayout vbl{};
-    vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
-
-    // bind
-    m_vao.connectVertexBuffer(vbo, vbl);
-    IndexBuffer ebo{ indices, sizeof(indices) }; // is nog gebind
-	VertexBuffer ivbo{ m_locationsMatrices.data(), sizeof(glm::mat4) * NUMBER_OF_LIGHTS};
-
-	m_vao.connectInstanceBuffer(ivbo, BufferAttribute{ 4, GL_FLOAT, GL_FALSE }, 1, 4, sizeof(glm::vec4));
-    m_vao.unbind();
+	m_ivbo.setData(m_locationsMatrices.data(), sizeof(glm::mat4) * NUMBER_OF_LIGHTS);
+	m_lightModel = Model{"res/Models/torch/torch.fbx", false, &m_ivbo };
 }
 
 // Best in mazebuilder
@@ -120,7 +86,7 @@ void Lights::initMatrices()
 	{
 		glm::mat4 model{ 1.0f };
 		model = glm::translate(model, glm::vec3{ location.x, 1.0f, location.y });
-		model = glm::scale(model, glm::vec3{ 0.1f, 0.1f, 0.1f });
+		model = glm::scale(model, glm::vec3{ 0.01f, 0.005f, 0.01f });
 		m_locationsMatrices.push_back(std::move(model));
 	}
 }
@@ -154,7 +120,7 @@ void Lights::handleLeftClickPicking()
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 3.0f))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 8.0f))
 		{
 			m_chimeSound.setPosition(center.x, center.y, center.z);
 			m_chimeSound.stop(); // Rewind
@@ -176,7 +142,7 @@ void Lights::handleRightClickPicking()
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 3.0f))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 8.0f))
 		{
 			m_lightColours[lightNumber] = glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat() };
 			if (m_lightsOn[lightNumber])

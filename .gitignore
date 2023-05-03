@@ -15,5 +15,8 @@
 # out
 /out/*
 
+# models
+/res/Models/*
+
 glad.c
 stb_image.*

@@ -8,7 +8,7 @@
 
 #include "../../Renderer/Renderer.h"
 #include "../../Buffers/UniformBuffer.h"
-
+#include "../Model.h"
 
 class Lights
 {
@@ -36,8 +36,9 @@ public:
 	void initLightsInput(EventManager* eventManager);
 
 private:
+	Model m_lightModel;
 	UniformBuffer m_lightBuffer;
-	VertexArray m_vao;
+	VertexBuffer m_ivbo;
 	Shader m_shader;
 	void initObject();
 

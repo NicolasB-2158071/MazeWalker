@@ -1,14 +1,14 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures) : m_vao{ true },
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures, const VertexBuffer* ivbo) : m_vao{ true },
 m_vbo{ &vertices[0], sizeof(Vertex) * vertices.size() }, m_ibo{ &indices[0], sizeof(unsigned int) * indices.size() }, m_textures{ textures }, m_indicesSize{ indices.size() }
 {
-    setupMesh();
+    setupMesh(ivbo);
 }
 
-void Mesh::draw(const Shader& shader)
+void Mesh::draw(const Shader& shader, int instancingCount)
 {
-    // Textures
+    // Textures -> could be translated to setupMesh!!!!
     unsigned int diffuseNr{ 1 };
     unsigned int specularNr{ 1 };
     unsigned int normalNr{ 1 };
@@ -32,10 +32,13 @@ void Mesh::draw(const Shader& shader)
     }
 
     m_vao.bind();
-    glDrawElements(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0);
+    if (instancingCount == 0)
+        glDrawElements(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0);
+    else
+        glDrawElementsInstanced(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0, instancingCount);
 }
 
-void Mesh::setupMesh()
+void Mesh::setupMesh(const VertexBuffer* ivbo)
 {
     VertexBufferLayout vbl{};
     vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
@@ -49,5 +52,7 @@ void Mesh::setupMesh()
 
     m_vao.connectVertexBuffer(m_vbo, vbl);
     m_ibo.bind();
+    if (ivbo != nullptr)
+        m_vao.connectInstanceBuffer(*ivbo, BufferAttribute{ 4, GL_FLOAT, GL_FALSE }, 6, 9, sizeof(glm::vec4));
     m_vao.unbind();
 }

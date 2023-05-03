@@ -1,14 +1,16 @@
 #include "Model.h"
 
-Model::Model(const std::string& path, bool gamma) : m_gammaCorrection{ gamma }
+Model::Model() {}
+
+Model::Model(const std::string& path, bool gamma, const VertexBuffer* ivbo) : m_gammaCorrection{ gamma }, m_ivbo{ivbo}
 {
     loadModel(path);
 }
 
-void Model::draw(Shader& shader)
+void Model::draw(const Shader& shader, int instanceCount)
 {
     for (unsigned int i = 0; i < m_meshes.size(); i++)
-        m_meshes[i].draw(shader);
+        m_meshes[i].draw(shader, instanceCount);
 }
 
 void Model::loadModel(const std::string& path)
@@ -110,7 +112,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Mesh::aTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    return Mesh{ vertices, indices, textures };
+    return Mesh{ vertices, indices, textures, m_ivbo };
 }
 
 std::vector<Mesh::aTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)

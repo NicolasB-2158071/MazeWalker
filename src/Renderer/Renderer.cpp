@@ -17,7 +17,7 @@ void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Tex
 	glEnable(GL_BLEND);
 	shader.use();
 
-	texture.activeAndBind(0);
+	texture.activeAndBind(GL_TEXTURE0);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glDisable(GL_BLEND);
@@ -28,7 +28,7 @@ void Renderer::drawWalls(const VertexArray& vao, const Shader& shader, const Tex
 {
 	shader.use();
 
-	texture.activeAndBind(0);
+	texture.activeAndBind(GL_TEXTURE0);
 	vao.bind();
 	glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, amount);
 }
@@ -38,16 +38,14 @@ void Renderer::drawSkybox(const VertexArray& vao, const Shader& shader, const Cu
 	glDepthFunc(GL_LEQUAL);
 	shader.use();
 
-	cubemap.activeAndBind(0);
+	cubemap.activeAndBind(GL_TEXTURE0);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glDepthFunc(GL_LESS);
 }
 
-void Renderer::drawLights(const VertexArray& vao, const Shader& shader, int amount)
+void Renderer::drawLights(Model& lightModel, const Shader& shader, int amount)
 {
 	shader.use();
-
-	vao.bind();
-	glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0, amount);
+	lightModel.draw(shader, amount);
 }

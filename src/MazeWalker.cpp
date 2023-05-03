@@ -3,9 +3,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Listener.hpp>
 
-#include "Objects/Model.h"
-#include "Shaders/Shader.h"
-
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
@@ -24,9 +21,6 @@ void MazeWalker::run()
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
-
-    Shader ourShader("src/Shaders/ModelLoadingVS.vs", "src/Shaders/ModelLoadingFs.fs");
-    Model ourModel{ "res/Models/torch/torch.fbx" };
 
     while (m_running)
     {
@@ -71,8 +65,8 @@ void MazeWalker::processKeyBoardMovement()
     if (m_focus)
     {
         m_camera.processKeyboardMovement(presses, m_deltaTime);
-        if (m_window.isAKeyPressed() && m_maze->isWallColision(m_camera.getXZPosition()))
-            m_camera.rewindCamera();
+      /*  if (m_window.isAKeyPressed() && m_maze->isWallColision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();*/
     }
 }
 
