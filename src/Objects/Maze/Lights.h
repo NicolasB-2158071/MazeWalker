@@ -27,7 +27,7 @@ public:
 	};
 
 	const static unsigned int POINTLIGHT_BLOCK = 1;
-	const static unsigned int NUMBER_OF_LIGHTS = 8;
+	const static unsigned int NUMBER_OF_LIGHTS = 10;
 
 	Lights();
 

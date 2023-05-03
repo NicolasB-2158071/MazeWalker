@@ -13,12 +13,11 @@ MazeBuilder::MazeBuilder(const glm::vec3& wallSize, const char* mazeFile) : m_wa
 		readLocations(mazeFile);
 	else
 	{
-		m_width = 2, m_height = 2;
-		m_generator->generateMaze(m_width, m_height);
+		int tileWidth = 10, tileHeight = 15;
+		m_generator->generateMaze(tileWidth, tileHeight);
 		m_wallOffsets = m_generator->getWallLocations();
 		m_wallAmount = m_wallOffsets.size();
-		for (auto& offset : m_wallOffsets)
-			std::cout << offset.x << ' ' << offset.y << std::endl;
+		m_width = tileWidth * 2 - 1, m_height = tileHeight * 2 - 1;
 	}
 	calculateXZLocations();
 	calculateLocationMatrices();
@@ -87,7 +86,7 @@ std::vector<glm::vec2> MazeBuilder::getRandomLightPositions(int quantity) const
 	std::uniform_real_distribution<> disWidth(0, getWidth());
 	std::uniform_real_distribution<> disHeight(0, getHeight());
 
-	while (quantity > 0)
+	while (quantity > 1)
 	{
 		glm::vec2 location{ disWidth(gen), disHeight(gen) };
 		if (!isWall(location))
@@ -96,7 +95,7 @@ std::vector<glm::vec2> MazeBuilder::getRandomLightPositions(int quantity) const
 			--quantity;
 		}
 	}
-
+	lightLocations.push_back(glm::vec2{ getWidth() - (m_wallSize.x / 2), getHeight() - (m_wallSize.y / 2)}); // Finish light
 	return lightLocations;
 }
 

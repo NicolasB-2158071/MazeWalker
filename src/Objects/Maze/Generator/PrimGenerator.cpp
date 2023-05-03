@@ -2,6 +2,7 @@
 
 void PrimGenerator::generateMaze(int width, int height)
 {
+	srand(time(0));
 	initCells(width, height);
 	m_visited.clear();
 	m_frontier.clear();
@@ -51,18 +52,20 @@ void PrimGenerator::collectWalls()
 		for (int j = 0; j < m_width; ++j)
 		{
 			if (m_cells[i][j].wallLeft)
-				m_wallLocations.push_back(glm::vec2{ 2 * j - 1, i });
+				m_wallLocations.push_back(glm::vec2{ 2 * j - 1, 2 * i });
 
 			if (m_cells[i][j].wallTop)
-				m_wallLocations.push_back(glm::vec2{ 2 * j, i - 1 });
+				m_wallLocations.push_back(glm::vec2{ 2 * j, 2 * i - 1 });
 
+			m_wallLocations.push_back(glm::vec2{ 2 * j - 1, 2 * i - 1 }); // Left top
 		}
 		// Last one also right wall
-		m_wallLocations.push_back(glm::vec2{ 2 * m_width - 1, i });
+		m_wallLocations.push_back(glm::vec2{ 2 * m_width - 1, 2 * i }); // Right
+		m_wallLocations.push_back(glm::vec2{ 2 * m_width - 1, 2 * i - 1 }); // Right top
 	}
 	// Last row bottom walls
-	for (int i = 0; i < m_width; ++i)
-		m_wallLocations.push_back(glm::vec2{2 * m_height - 1 , i});
+	for (int i = -1; i < m_width * 2; ++i)
+		m_wallLocations.push_back(glm::vec2{i , 2 * m_height - 1 });
 }
 
 void PrimGenerator::removeWallsBetweenCells(const glm::vec2& cellOne, const glm::vec2& cellTwo)

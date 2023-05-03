@@ -43,8 +43,8 @@ void Maze::initAudio()
 		std::cout << "ERROR loading background sound";
 		return;
 	}
-	m_backgroundMusic.setPosition(m_builder.getWidth(), 2.0f, m_builder.getHeight());
-	m_backgroundMusic.setMinDistance(10.0f);
+	m_backgroundMusic.setPosition(m_builder.getWidth(), 0.5f, m_builder.getHeight());
+	m_backgroundMusic.setMinDistance(5.0f);
 	m_backgroundMusic.setLoop(true);
 	m_backgroundMusic.setVolume(50.0f);
 	m_backgroundMusic.play();

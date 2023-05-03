@@ -135,6 +135,7 @@ void Lights::initAudio()
 	m_chimeSound.setBuffer(m_buffer);
 	m_chimeSound.setMinDistance(3.0f);
 	m_chimeSound.setAttenuation(10.0f);
+	m_chimeSound.setVolume(25.0f);
 }
 
 void Lights::setLightColour(int pointLightNumber, const glm::vec3& colour)
