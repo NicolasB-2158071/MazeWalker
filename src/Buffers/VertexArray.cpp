@@ -1,13 +1,14 @@
 #include "VertexArray.h"
 
-VertexArray::VertexArray()
+VertexArray::VertexArray(bool copied) : m_delete{ !copied }
 {
 	glGenVertexArrays(1, &m_arrayID);
 }
 
 VertexArray::~VertexArray()
 {
-	glDeleteVertexArrays(1, &m_arrayID);
+	if (m_delete)
+		glDeleteVertexArrays(1, &m_arrayID);
 }
 
 void VertexArray::connectVertexBuffer(const VertexBuffer& vbo, const VertexBufferLayout& vbl) const
@@ -21,9 +22,9 @@ void VertexArray::connectVertexBuffer(const VertexBuffer& vbo, const VertexBuffe
 	for (int i = 0; i < vbl.getQuantity(); ++i)
 	{
 		BufferAttribute attribute{ vbl.getItem(i) };
-		
+
 		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, attribute.quantity, attribute.type, attribute.normalised, stride, (void*) offset);
+		glVertexAttribPointer(i, attribute.quantity, attribute.type, attribute.normalised, stride, (void*)offset);
 		offset += vbl.getSizeOfType(attribute.type) * attribute.quantity;
 	}
 

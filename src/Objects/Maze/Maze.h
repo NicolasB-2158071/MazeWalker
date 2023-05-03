@@ -10,13 +10,8 @@ class Maze
 public:
 	Maze();
 
-	// Constructor level
-	// Random maze generator (default constructor)
-
 	void draw(Renderer& renderer);
-
 	bool isWallColision(const glm::vec2& cameraPos) const;
-
 	Lights& getLights();
 
 private:

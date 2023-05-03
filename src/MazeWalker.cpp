@@ -3,6 +3,9 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Listener.hpp>
 
+#include "Objects/Model.h"
+#include "Shaders/Shader.h"
+
 #include <iostream>
 
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
@@ -10,7 +13,6 @@ m_interactionHandler{ windowWidth, windowHeight, m_camera}, m_renderer{m_camera}
 {
     m_maze = std::make_unique<Maze>();
     m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
-
     m_maze->getLights().initLightsInput(&m_eventManager);
 
     initApplicationInputs();
@@ -22,6 +24,9 @@ void MazeWalker::run()
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
+
+    Shader ourShader("src/Shaders/ModelLoadingVS.vs", "src/Shaders/ModelLoadingFs.fs");
+    Model ourModel{ "res/Models/torch/torch.fbx" };
 
     while (m_running)
     {

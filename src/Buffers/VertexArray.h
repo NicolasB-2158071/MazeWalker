@@ -8,7 +8,7 @@
 class VertexArray
 {
 public:
-	VertexArray();
+	VertexArray(bool copied = false);
 	~VertexArray();
 
 	void connectVertexBuffer(const VertexBuffer& vbo, const VertexBufferLayout& vbl) const;
@@ -19,4 +19,6 @@ public:
 
 private:
 	unsigned int m_arrayID;
+
+	bool m_delete;
 };

@@ -5,7 +5,7 @@
 #include "../../Buffers/VertexBuffer.h"
 #include "Lights.h"
 
-Floor::Floor() : m_texture{ "res/sandFloor.jpg", GL_RGB }, m_shader{"src/Shaders/FloorVShader.vs", "src/Shaders/FloorFShader.fs"}
+Floor::Floor() : m_texture{ "res/sandFloor.jpg" }, m_shader{"src/Shaders/FloorVShader.vs", "src/Shaders/FloorFShader.fs"}
 {
     m_shader.use();
     m_shader.setInt("material.diffuse", 0);

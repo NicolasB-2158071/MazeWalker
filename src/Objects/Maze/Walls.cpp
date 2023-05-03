@@ -5,7 +5,7 @@
 #include "../../Buffers/IndexBuffer.h"
 #include "Lights.h"
 
-Walls::Walls() : m_texture{ "res/bookshelf.png", GL_RGB }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
+Walls::Walls() : m_texture{ "res/bookshelf.png" }, m_shader{ "src/Shaders/WallsVShader.vs", "src/Shaders/WallsFShader.fs" }
 {
     m_shader.use();
     m_shader.setInt("material.diffuse", 0);
