@@ -17,6 +17,7 @@ void Maze::draw(Renderer& renderer)
 	m_lights.draw(renderer);
 }
 
+// Collision met alle objecten
 bool Maze::isWallColision(const glm::vec2& cameraPos) const
 {
 	for (auto& pos : m_wallsXZLocations)
@@ -35,7 +36,7 @@ Lights& Maze::getLights()
 	return m_lights;
 }
 
-// TODO place at end position
+
 void Maze::initAudio()
 {
 	if (!m_backgroundMusic.openFromFile("res/Audio/Ambient.wav"))
