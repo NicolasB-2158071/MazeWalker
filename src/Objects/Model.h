@@ -27,7 +27,7 @@ class Model
 public:
 
     Model();
-    Model(const std::string& path, bool gamma = false, const VertexBuffer* ivbo = nullptr);
+    Model(const std::string& path, bool gamma = false, const VertexBuffer* ivbo = nullptr, const VertexBuffer* ivboNormalModel = nullptr);
     void draw(const Shader& shader, int instanceCount);
 
 private:
@@ -36,6 +36,7 @@ private:
     std::string m_directory;
 
     const VertexBuffer* m_ivbo;
+    const VertexBuffer* m_ivboNormalModel;
     bool m_gammaCorrection;
 
     void loadModel(const std::string& path);

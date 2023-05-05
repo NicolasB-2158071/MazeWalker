@@ -3,22 +3,32 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #include "../Model.h"
 #include "../../Shaders/Shader.h"
+#include "../../Renderer/Renderer.h"
 
-class Mask
+class Masks
 {
 public:
-	Mask();
+	Masks();
+
+	void setLocations(const std::vector<glm::vec2>& locations);
+	void draw(Renderer& renderer);
+
+	const static unsigned int NUMBER_OF_MASKS = 5;
 
 private:
 	Model m_maskModel;
 	Shader m_shader;
 	VertexBuffer m_ivbo;
+	VertexBuffer m_ivboNormalModel;
 
 	std::vector<glm::vec2> m_locations;
 	std::vector<glm::mat4> m_locationsMatrices;
+	
 	void initMatrices();
-
 	void initObject();
+	void initLighting();
+	std::vector<glm::mat3> calculateNormalModels(const std::vector<glm::mat4>& locations) const;
 };

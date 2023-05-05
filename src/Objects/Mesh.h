@@ -28,7 +28,8 @@ public:
 		std::string path;
 	};
 
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures, const VertexBuffer* ivbo);
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures,
+		const VertexBuffer* ivbo, const VertexBuffer* ivboNormalModel);
 
 	void draw(const Shader& shader, int instancingCount);
 
@@ -40,5 +41,5 @@ private:
 	size_t m_indicesSize;
 	std::vector<aTexture> m_textures;
 
-	void setupMesh(const VertexBuffer* ivbo);
+	void setupMesh(const VertexBuffer* ivbo, const VertexBuffer* ivboNormalModel);
 };

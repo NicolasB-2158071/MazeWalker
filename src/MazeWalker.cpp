@@ -8,9 +8,8 @@
 MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel) : m_window{ windowWidth, windowHeight, titel, &m_eventManager}, m_camera{ windowWidth , windowHeight, &m_eventManager},
 m_interactionHandler{ windowWidth, windowHeight, m_camera}, m_renderer{m_camera}, m_running{m_window.SUCCESS}
 {
-    m_maze = std::make_unique<Maze>();
+    m_maze = std::make_unique<Maze>(&m_eventManager);
     m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
-    m_maze->getLights().initLightsInput(&m_eventManager);
 
     initApplicationInputs();
 }
@@ -67,8 +66,8 @@ void MazeWalker::processKeyBoardMovement()
     if (m_focus)
     {
         m_camera.processKeyboardMovement(presses, m_deltaTime);
-        if (m_window.isAKeyPressed() && m_maze->isCollision(m_camera.getXZPosition()))
-            m_camera.rewindCamera();
+       /* if (m_window.isAKeyPressed() && m_maze->isCollision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();*/
     }
 }
 

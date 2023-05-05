@@ -79,7 +79,6 @@ void Lights::initObject()
 	m_lightModel = Model{"res/Models/torch/torch.fbx", false, &m_ivbo };
 }
 
-// Best in mazebuilder
 void Lights::initMatrices()
 {
 	for (auto& location : m_locations)

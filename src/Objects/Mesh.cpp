@@ -1,9 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures, const VertexBuffer* ivbo) : m_vao{ true },
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<aTexture>& textures,
+    const VertexBuffer* ivbo, const VertexBuffer* ivboNormalModel) : m_vao{ true },
 m_vbo{ &vertices[0], sizeof(Vertex) * vertices.size() }, m_ibo{ &indices[0], sizeof(unsigned int) * indices.size() }, m_textures{ textures }, m_indicesSize{ indices.size() }
 {
-    setupMesh(ivbo);
+    setupMesh(ivbo, ivboNormalModel);
 }
 
 void Mesh::draw(const Shader& shader, int instancingCount)
@@ -27,7 +28,7 @@ void Mesh::draw(const Shader& shader, int instancingCount)
             number = std::to_string(heightNr++);
 
         // Set the sampler to the current slot (ook nog met material!!)
-        shader.setInt((name + number).c_str(), i); // material: naam conventie
+        shader.setInt(("material." + name + number).c_str(), i); // material: naam conventie
         m_textures[i].texture.activeAndBind(GL_TEXTURE0 + i);
     }
 
@@ -38,7 +39,7 @@ void Mesh::draw(const Shader& shader, int instancingCount)
         glDrawElementsInstanced(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0, instancingCount);
 }
 
-void Mesh::setupMesh(const VertexBuffer* ivbo)
+void Mesh::setupMesh(const VertexBuffer* ivbo, const VertexBuffer* ivboNormalModel)
 {
     VertexBufferLayout vbl{};
     vbl.addAttribute(3, GL_FLOAT, GL_FALSE);
@@ -54,5 +55,9 @@ void Mesh::setupMesh(const VertexBuffer* ivbo)
     m_ibo.bind();
     if (ivbo != nullptr)
         m_vao.connectInstanceBuffer(*ivbo, BufferAttribute{ 4, GL_FLOAT, GL_FALSE }, 6, 9, sizeof(glm::vec4));
+
+    if (ivboNormalModel != nullptr)
+        m_vao.connectInstanceBuffer(*ivboNormalModel, BufferAttribute{ 3, GL_FLOAT, GL_FALSE }, 10, 12, sizeof(glm::vec4));
+
     m_vao.unbind();
 }

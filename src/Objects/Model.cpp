@@ -2,7 +2,7 @@
 
 Model::Model() {}
 
-Model::Model(const std::string& path, bool gamma, const VertexBuffer* ivbo) : m_gammaCorrection{ gamma }, m_ivbo{ivbo}
+Model::Model(const std::string& path, bool gamma, const VertexBuffer* ivbo, const VertexBuffer* ivboNormalModel) : m_gammaCorrection{ gamma }, m_ivbo{ivbo}, m_ivboNormalModel{ivboNormalModel}
 {
     loadModel(path);
 }
@@ -112,7 +112,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Mesh::aTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    return Mesh{ vertices, indices, textures, m_ivbo };
+    return Mesh{ vertices, indices, textures, m_ivbo, m_ivboNormalModel };
 }
 
 std::vector<Mesh::aTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)

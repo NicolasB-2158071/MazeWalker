@@ -25,6 +25,7 @@ public:
 	void drawSkybox(const VertexArray& vao, const Shader& shader, const Cubemap& cubemap);
 
 	void drawLights(Model& lightModel, const Shader& shader, int amount);
+	void drawMasks(Model& maskModel, const Shader& shader, int amount);
 
 private:
 	Camera& m_camera;

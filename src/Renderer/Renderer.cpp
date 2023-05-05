@@ -49,3 +49,9 @@ void Renderer::drawLights(Model& lightModel, const Shader& shader, int amount)
 	shader.use();
 	lightModel.draw(shader, amount);
 }
+
+void Renderer::drawMasks(Model& maskModel, const Shader& shader, int amount)
+{
+	shader.use();
+	maskModel.draw(shader, amount);
+}
