@@ -58,4 +58,10 @@ private:
 	float m_maxHeight = 1.0f;
 	bool m_onGround = true;
 	void processJumping(bool spacePressed);
+
+	// Dashing vars
+	double m_startDashTime = 0.0;
+	bool m_canDash = true;
+	bool m_isDashing = false;
+	void processDash(float cameraSpeed, bool fKeyPressed);
 };

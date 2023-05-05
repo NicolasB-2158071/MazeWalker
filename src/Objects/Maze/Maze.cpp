@@ -1,6 +1,6 @@
 #include "Maze.h"
 
-Maze::Maze() : /*m_builder{res/mazes/maze.txt"},*/ m_walls{ glm::vec3{1.0f, 2.0f, 1.0f} }
+Maze::Maze() : /*m_builder{"res/mazes/maze.txt"},*/ m_walls{glm::vec3{1.0f, 2.0f, 1.0f}}
 {
 	// Init objects based on wallsize, width and height
 	m_floor.initObject(m_builder.getWidth() * m_walls.getWallSize().x, m_builder.getHeight() * m_walls.getWallSize().z);

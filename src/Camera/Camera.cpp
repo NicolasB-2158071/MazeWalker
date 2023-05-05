@@ -20,7 +20,8 @@ void Camera::processKeyboardMovement(Window::keyboardPresses presses, float delt
         m_cameraPos -= glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
     if (presses.key_d_active)
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
-
+    
+    processDash(cameraSpeed, presses.key_f_active);
     processJumping(presses.key_space_active);
 }
 
@@ -128,4 +129,24 @@ void Camera::processJumping(bool spacePressed)
         m_velocityY = 0.0f;
         m_gravity *= -1;
     }
+}
+
+void Camera::processDash(float cameraSpeed, bool fKeyPressed)
+{
+    double currentTime{ glfwGetTime() };
+    if (currentTime - m_startDashTime > 3.0) // Wait three seconds for next dash
+        m_canDash = true;
+ 
+    if (currentTime - m_startDashTime > 0.15) // Stop dashing after 0.2 seconds
+        m_isDashing = false;
+
+    if (fKeyPressed && m_canDash)
+    {
+        m_isDashing = true;
+        m_startDashTime = currentTime;
+        m_canDash = false;
+    }
+
+    if (m_isDashing)
+        m_cameraPos += 5 * cameraSpeed * m_cameraFront;
 }
