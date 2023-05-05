@@ -11,7 +11,7 @@ public:
 	Maze();
 
 	void draw(Renderer& renderer);
-	bool isWallColision(const glm::vec2& cameraPos) const;
+	bool isCollision(const glm::vec2& cameraPos) const;
 	Lights& getLights();
 
 private:
@@ -20,12 +20,6 @@ private:
 	Walls m_walls;
 	Lights m_lights;
 	// Models
-
-	// Frequently used data (every player movement)
-	const std::vector<glm::vec2>& m_wallsXZLocations;
-	glm::vec3 m_wallSize;
-
-	const float OFFSET = 0.10f;
 
 	sf::Music m_backgroundMusic;
 	void initAudio();

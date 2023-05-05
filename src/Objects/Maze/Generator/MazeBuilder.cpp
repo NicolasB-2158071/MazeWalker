@@ -7,7 +7,7 @@
 
 
 // File meekrijg of niet (nullptr checken)
-MazeBuilder::MazeBuilder(const glm::vec3& wallSize, const char* mazeFile) : m_wallAmount{}, m_width{}, m_height{}, m_wallSize{ wallSize }, m_generator{ std::make_unique<PrimGenerator>() }
+MazeBuilder::MazeBuilder(const char* mazeFile) : m_wallAmount{}, m_width{}, m_height{}, m_generator{ std::make_unique<PrimGenerator>() }
 {
 	if (mazeFile != nullptr)
 		readLocations(mazeFile); // width, height, wallamount also in this function
@@ -19,8 +19,6 @@ MazeBuilder::MazeBuilder(const glm::vec3& wallSize, const char* mazeFile) : m_wa
 		m_wallAmount = m_wallOffsets.size();
 		m_width = tileWidth * 2 - 1, m_height = tileHeight * 2 - 1;
 	}
-	calculateXZLocations();
-	calculateLocationMatrices();
 }
 
 void MazeBuilder::readLocations(const char* mazePath)
@@ -56,19 +54,9 @@ void MazeBuilder::readLocations(const char* mazePath)
 	
 }
 
-std::vector<glm::mat4>& MazeBuilder::getWallsLocationMatrices()
+const std::vector<glm::vec2>& MazeBuilder::getWallOffsets() const
 {
-	return m_wallLocationMatrices;
-}
-
-const std::vector<glm::vec2>& MazeBuilder::getWallsXZLocations() const
-{
-	return m_wallsXZLocations;
-}
-
-glm::vec3 MazeBuilder::getWallSize() const
-{
-	return m_wallSize;
+	return m_wallOffsets;
 }
 
 int MazeBuilder::getWallAmount() const
@@ -76,76 +64,34 @@ int MazeBuilder::getWallAmount() const
 	return m_wallAmount;
 }
 
-std::vector<glm::vec2> MazeBuilder::getRandomLightPositions(int quantity) const
+std::vector<glm::vec2> MazeBuilder::getRandomPositions(int quantity, const Walls& walls) const
 {
 	// https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
-	std::vector<glm::vec2> lightLocations;
+	std::vector<glm::vec2> positions;
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> disWidth(0, getWidth());
-	std::uniform_real_distribution<> disHeight(0, getHeight());
+	std::uniform_real_distribution<> disWidth(0, getWidth() * walls.getWallSize().x);
+	std::uniform_real_distribution<> disHeight(0, getHeight() * walls.getWallSize().z);
 
-	while (quantity > 1)
+	while (quantity > 0)
 	{
-		glm::vec2 location{ disWidth(gen), disHeight(gen) };
-		if (!isWall(location))
+		glm::vec2 position{ disWidth(gen), disHeight(gen) };
+		if (!walls.isWallColision(position))
 		{
-			lightLocations.push_back(location);
+			positions.push_back(position);
 			--quantity;
 		}
 	}
-	lightLocations.push_back(glm::vec2{ getWidth() - (m_wallSize.x / 2), getHeight() - (m_wallSize.y / 2)}); // Finish light
-	return lightLocations;
+	return positions;
 }
 
-float MazeBuilder::getWidth() const
+int MazeBuilder::getWidth() const
 {
-	return m_width * m_wallSize.x;
+	return m_width;
 }
 
-float MazeBuilder::getHeight() const
+int MazeBuilder::getHeight() const
 {
-	return m_height * m_wallSize.z;
+	return m_height;
 }
-
-void MazeBuilder::calculateXZLocations()
-{
-	for (auto& offset : m_wallOffsets)
-		m_wallsXZLocations.push_back(glm::vec2{ offset.x * m_wallSize.x, offset.y * m_wallSize.z });
-}
-
-void MazeBuilder::calculateLocationMatrices()
-{
-	for (auto& offset : m_wallOffsets)
-		m_wallLocationMatrices.push_back(calculateModel(offset.x, offset.y));
-}
-
-glm::mat4 MazeBuilder::calculateModel(int xOffset, int zOffset) const
-{
-	glm::mat4 model{ 1.0f };
-	model = glm::translate(model, glm::vec3{ m_wallSize.x * xOffset, 0, m_wallSize.z * zOffset });
-	model = glm::scale(model, glm::vec3{ m_wallSize.x, m_wallSize.y, m_wallSize.z});
-
-	return std::move(model);
-}
-
-// Code duplicatie!!!
-bool MazeBuilder::isWall(const glm::vec2& location) const
-{
-	int OFFSET = 0.15f;
-	for (auto& wallLocations : m_wallsXZLocations)
-	{
-		// Between x and z intervals (pos is origin of object)
-		bool collisionX{ wallLocations.x - OFFSET < location.x && location.x < wallLocations.x + m_wallSize.x + OFFSET };
-		bool collisionZ{ wallLocations.y - OFFSET < location.y && location.y < wallLocations.y + m_wallSize.z + OFFSET };
-		if (collisionX && collisionZ)
-			return true;
-	}
-	return false;
-}
-
-
-// Enkel x, z offsets
-// -> wallXZLocaties berekenen
-// -> WallLocationMatrices berekenen
