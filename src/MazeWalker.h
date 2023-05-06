@@ -7,6 +7,7 @@
 #include "Renderer/Renderer.h"
 
 #include "Objects/Maze/Maze.h"
+#include "Objects/TeleportPad/TeleportPad.h"
 #include "Objects/Meteorite/Meteorite.h"
 #include "Objects/Skybox/Skybox.h"
 
@@ -14,7 +15,6 @@ class MazeWalker
 {
 public:
 	MazeWalker(float windowWidth, float windowHeight, const char* titel);
-	//~MazeWalker();
 
 	void run();
 
@@ -26,11 +26,9 @@ private:
 	Renderer m_renderer;
 
 	std::unique_ptr<Maze> m_maze;
+	std::unique_ptr<TeleportPad> m_teleportPad; // Property that actually belongs tho a Player class or something
 	std::unique_ptr<Meteorite> m_meteorites;
 	std::unique_ptr<Skybox> m_skybox;
-
-	// Input ook anders wegens springen (zwaartekracht!!)
-	// Random maze genereren is een algoritme (verschillende)
 
 	bool m_running;
 	float m_deltaTime = 0.0f;
@@ -39,6 +37,6 @@ private:
 
 	bool m_focus = false;
 
-	void processKeyBoardMovement(); // Keyboardmovement best processed per frame (or using some constant deltaTime to synch keyCallback events)
+	void processKeyBoardMovement(); // Keyboardmovement best processed per frame instead of EventManager (or using some constant deltaTime to synch keyCallback events)
 	void initApplicationInputs();
 };

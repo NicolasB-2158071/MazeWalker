@@ -41,7 +41,7 @@ void BlackHole::initAudio()
 {
     if (!m_backgroundMusic.openFromFile("res/Audio/Ambient.wav"))
     {
-        std::cout << "ERROR loading background sound";
+        std::cout << "ERROR loading black hole sound";
         return;
     }
     m_backgroundMusic.setPosition(m_floorWidth, 1.0f, m_floorHeight);

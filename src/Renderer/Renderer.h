@@ -29,7 +29,7 @@ public:
 	void drawLights(Model& lightModel, const Shader& shader, int amount);
 	void drawMasks(Model& maskModel, const Shader& shader, int amount);
 	void drawBlackHole(Model& blackHoleModel, const Shader& shader);
-
+	void drawTeleportPad(Model& teleportPadModel, const Shader& shader);
 
 private:
 	Camera& m_camera;

@@ -27,6 +27,7 @@ public:
 	void setCameraSpeed(float cameraSpeed);
 	void setMouseSpeed(float mouseSpeed);
 	void setPositionLocked(const glm::vec3& position);
+	bool isTeleportSet() const;
 
 	void newFocus(); // firstMouse
 

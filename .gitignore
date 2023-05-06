@@ -17,6 +17,7 @@
 
 # models
 /res/Models/*
+/res/Audio/*
 
 glad.c
 stb_image.*

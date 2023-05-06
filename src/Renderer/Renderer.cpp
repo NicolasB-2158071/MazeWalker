@@ -73,3 +73,9 @@ void Renderer::drawBlackHole(Model& blackHoleModel, const Shader& shader)
 
 	blackHoleModel.draw(shader, 1);
 }
+
+void Renderer::drawTeleportPad(Model& teleportPadModel, const Shader& shader)
+{
+	shader.use();
+	teleportPadModel.draw(shader, 1);
+}

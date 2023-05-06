@@ -9,6 +9,7 @@ MazeWalker::MazeWalker(float windowWidth, float windowHeight, const char* titel)
 m_interactionHandler{ windowWidth, windowHeight, m_camera}, m_renderer{m_camera}, m_running{m_window.SUCCESS}
 {
     m_maze = std::make_unique<Maze>(&m_eventManager);
+    m_teleportPad = std::make_unique<TeleportPad>(m_camera);
     m_meteorites = std::make_unique<Meteorite>(); m_meteorites->initObject(m_maze->getMazeWidth(), m_maze->getMazeHeight());
     m_skybox = std::make_unique<Skybox>(); m_skybox->initObject();
 
@@ -39,6 +40,7 @@ void MazeWalker::run()
         m_renderer.prepare(); // View matrix
 
         m_maze->draw(m_renderer);
+        m_teleportPad->draw(m_renderer);
         m_meteorites->draw(m_renderer);
         m_skybox->draw(m_renderer); // Draw always as last
 
@@ -66,9 +68,10 @@ void MazeWalker::processKeyBoardMovement()
     if (m_focus)
     {
         m_camera.processKeyboardMovement(presses, m_deltaTime);
-        /*if (m_maze->isCollision(m_camera.getXZPosition()))
-            m_camera.rewindCamera();*/
-        // Checken ding teleport plaatsen
+        m_teleportPad->update(presses.key_e_active); // Yeah, not optimal
+        if (m_maze->isCollision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();
+
     }
 }
 

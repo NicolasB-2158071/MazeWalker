@@ -110,6 +110,11 @@ void Camera::setPositionLocked(const glm::vec3& position)
     m_locked = true;
 }
 
+bool Camera::isTeleportSet() const
+{
+    return m_teleportSet;
+}
+
 void Camera::newFocus()
 {
     m_firstMouse = true;
@@ -171,7 +176,7 @@ void Camera::processDash(float cameraSpeed, bool fKeyPressed)
 void Camera::processTeleport(bool eKeyPressed)
 {
     double currentTime{ glfwGetTime() };
-    if (!eKeyPressed || currentTime - m_debounceKeyPress < 1.0)
+    if (!eKeyPressed || currentTime - m_debounceKeyPress < 0.5)
         return;
 
     if (m_teleportSet)

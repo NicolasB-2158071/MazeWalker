@@ -119,7 +119,7 @@ void Lights::handleLeftClickPicking()
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 8.0f))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.3f, 2.0f))
 		{
 			m_chimeSound.setPosition(center.x, center.y, center.z);
 			m_chimeSound.stop(); // Rewind
@@ -141,7 +141,7 @@ void Lights::handleRightClickPicking()
 	for (auto& location : m_locations)
 	{
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
-		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 8.0f))
+		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.3f, 2.0f))
 		{
 			m_lightColours[lightNumber] = glm::vec3{ 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f) };
 			if (m_lightsOn[lightNumber])
