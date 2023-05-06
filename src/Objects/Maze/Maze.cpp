@@ -9,6 +9,7 @@ Maze::Maze(EventManager* eventManager) : /*m_builder{"res/mazes/maze.txt"},*/ m_
 	m_masks.setLocations(m_builder.getRandomPositions(Masks::NUMBER_OF_MASKS, m_walls));
 
 	m_lights.initLightsInput(eventManager);
+	m_masks.initMasksInput(eventManager);
 
 	initAudio();
 }

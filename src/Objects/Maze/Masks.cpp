@@ -1,6 +1,8 @@
 #include "Masks.h"
 #include "Lights.h"
 
+#include "../../Camera/InteractionHandler.h"
+
 Masks::Masks() : m_shader{ "src/Shaders/MaskVSShader.vs", "src/Shaders/MaskFSShader.fs" }
 {
     m_shader.use();
@@ -17,7 +19,19 @@ void Masks::setLocations(const std::vector<glm::vec2>& locations)
 
 void Masks::draw(Renderer& renderer)
 {
+    if (glfwGetTime() - m_startTimeSeeThrough > 3.0)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     renderer.drawMasks(m_maskModel, m_shader, NUMBER_OF_MASKS);
+}
+
+void Masks::initMasksInput(EventManager* eventManager)
+{
+    eventManager->registerCallback(EventType::MOUSE_LEFT_CLICK, [this](EventInfo& info)
+    {
+        MouseMovementInfo& mouseInfo{ static_cast<MouseMovementInfo&>(info) };
+        handleLeftClickPicking(); // Always from center for clicking
+    });
 }
 
 void Masks::initMatrices()
@@ -57,5 +71,21 @@ std::vector<glm::mat3> Masks::calculateNormalModels(const std::vector<glm::mat4>
     return normalModels;
 }
 
-// Eventmanger meegeven aan maze
-// Shader aanpassen
+void Masks::handleLeftClickPicking()
+{
+    InteractionHandler* ih{ InteractionHandler::getInstance() };
+    glm::vec3 ray{ ih->calculateRayVectorFromCenter() };
+
+    // Check for all masks if there is a collision
+    int maskNumber{};
+    for (auto& location : m_locations)
+    {
+        glm::vec3 center{ location.x + 0.01f, 0.0f, location.y + 0.01f };
+        if (ih->isSphereRayCollisionFromCamera(ray, center, 0.3f, 8.0f))
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            m_startTimeSeeThrough = glfwGetTime();
+        }
+        ++maskNumber;
+    }
+}

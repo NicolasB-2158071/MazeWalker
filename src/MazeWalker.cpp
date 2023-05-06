@@ -21,8 +21,6 @@ void MazeWalker::run()
     //glCullFace(GL_BACK);
     //glFrontFace(GL_CCW);
 
-    /*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
-
     while (m_running)
     {
         updateDeltaTime();
@@ -66,8 +64,8 @@ void MazeWalker::processKeyBoardMovement()
     if (m_focus)
     {
         m_camera.processKeyboardMovement(presses, m_deltaTime);
-       /* if (m_window.isAKeyPressed() && m_maze->isCollision(m_camera.getXZPosition()))
-            m_camera.rewindCamera();*/
+        if (m_maze->isCollision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();
     }
 }
 
@@ -77,7 +75,9 @@ void MazeWalker::initApplicationInputs()
     m_eventManager.registerCallback(EventType::WINDOW_RESIZE, [this](EventInfo& info)
     {
         WindowResizeInfo& resizeInfo{ static_cast<WindowResizeInfo&>(info) };
-        m_interactionHandler.setWindowDimensions(resizeInfo.width, resizeInfo.height);
+        m_camera.setWindowDimensions(resizeInfo.width, resizeInfo.height); // Update projectionMatrix
+        m_interactionHandler.setWindowDimensions(resizeInfo.width, resizeInfo.height); // For picking in the middle
+        m_renderer.updateProjectionMatrix(); // Rendering
         glViewport(0, 0, resizeInfo.width, resizeInfo.height);
     });
     

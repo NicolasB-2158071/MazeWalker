@@ -28,7 +28,6 @@ public:
 	void update();
 	
 	keyboardPresses processKeyboardPresses();
-	bool isAKeyPressed() const;
 	void setCursorFocus(bool enabled);
 
 	float getWidth() const;

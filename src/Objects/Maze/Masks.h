@@ -16,6 +16,8 @@ public:
 	void setLocations(const std::vector<glm::vec2>& locations);
 	void draw(Renderer& renderer);
 
+	void initMasksInput(EventManager* eventManager);
+
 	const static unsigned int NUMBER_OF_MASKS = 5;
 
 private:
@@ -31,4 +33,7 @@ private:
 	void initObject();
 	void initLighting();
 	std::vector<glm::mat3> calculateNormalModels(const std::vector<glm::mat4>& locations) const;
+
+	double m_startTimeSeeThrough = 0.0;
+	void handleLeftClickPicking();
 };

@@ -19,6 +19,7 @@ public:
 
 	Renderer(Camera& camera);
 	void prepare();
+	void updateProjectionMatrix();
 
 	void drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture);
 	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);

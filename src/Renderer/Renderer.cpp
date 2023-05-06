@@ -12,6 +12,12 @@ void Renderer::prepare()
 	m_cameraBuffer.addData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(m_camera.getViewMatrix()));
 }
 
+void Renderer::updateProjectionMatrix()
+{
+	m_cameraBuffer.bind();
+	m_cameraBuffer.addData(0, sizeof(glm::mat4), glm::value_ptr(m_camera.getProjectionMatrix()));
+}
+
 void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture)
 {
 	glEnable(GL_BLEND);

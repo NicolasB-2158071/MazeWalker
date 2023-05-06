@@ -17,6 +17,7 @@ public:
 
 	glm::mat4 getViewMatrix() const;
 	glm::mat4 getProjectionMatrix() const;
+	void setWindowDimensions(float windowWidth, float windowHeight);
 
 	glm::vec3 getCameraPos() const;
 	glm::vec3 getCameraDirection() const;

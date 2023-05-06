@@ -22,7 +22,7 @@ void Camera::processKeyboardMovement(Window::keyboardPresses presses, float delt
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
     
     processDash(cameraSpeed, presses.key_f_active);
-    //processJumping(presses.key_space_active);
+    processJumping(presses.key_space_active);
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)
@@ -60,6 +60,11 @@ glm::mat4 Camera::getViewMatrix() const
 glm::mat4 Camera::getProjectionMatrix() const
 {
     return m_projectionMatrix;
+}
+
+void Camera::setWindowDimensions(float windowWidth, float windowHeight)
+{
+    m_projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f);
 }
 
 glm::vec3 Camera::getCameraPos() const
