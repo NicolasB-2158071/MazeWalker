@@ -15,6 +15,9 @@ public:
 	void draw(Renderer& renderer);
 	bool isCollision(const glm::vec2& cameraPos) const;
 
+	float getMazeWidth() const;
+	float getMazeHeight() const;
+
 private:
 	MazeBuilder m_builder;
 	Walls m_walls;

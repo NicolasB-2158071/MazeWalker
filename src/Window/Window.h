@@ -18,6 +18,7 @@ public:
 		bool key_a_active{ false };
 		bool key_d_active{ false };
 		bool key_f_active{ false };
+		bool key_e_active{ false };
 		bool key_esc_active{ false };
 		bool key_space_active{ false };
 	};

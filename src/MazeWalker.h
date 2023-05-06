@@ -7,6 +7,7 @@
 #include "Renderer/Renderer.h"
 
 #include "Objects/Maze/Maze.h"
+#include "Objects/Meteorite/Meteorite.h"
 #include "Objects/Skybox/Skybox.h"
 
 class MazeWalker
@@ -25,6 +26,7 @@ private:
 	Renderer m_renderer;
 
 	std::unique_ptr<Maze> m_maze;
+	std::unique_ptr<Meteorite> m_meteorites;
 	std::unique_ptr<Skybox> m_skybox;
 
 	// Input ook anders wegens springen (zwaartekracht!!)

@@ -102,6 +102,7 @@ Window::keyboardPresses Window::processKeyboardPresses()
     m_presses.key_a_active = (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS);
     m_presses.key_d_active = (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS);
     m_presses.key_f_active = (glfwGetKey(m_window, GLFW_KEY_F) == GLFW_PRESS);
+    m_presses.key_e_active = (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS);
     m_presses.key_esc_active = (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS);
     m_presses.key_space_active = (glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS);
 

@@ -25,9 +25,11 @@ public:
 	void drawWalls(const VertexArray& vao, const Shader& shader, const Texture& texture, int amount);
 	void drawSkybox(const VertexArray& vao, const Shader& shader, const Cubemap& cubemap);
 
+	void drawMeteorites(Model& meteoriteModel, const Shader& shader, int amount);
 	void drawLights(Model& lightModel, const Shader& shader, int amount);
 	void drawMasks(Model& maskModel, const Shader& shader, int amount);
 	void drawBlackHole(Model& blackHoleModel, const Shader& shader);
+
 
 private:
 	Camera& m_camera;

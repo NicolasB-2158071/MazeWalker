@@ -43,6 +43,7 @@ private:
 	// For collision
 	glm::vec2 m_oldPos;
 
+
 	// Mouse variables
 	bool m_firstMouse = true;
 	float m_lastX;
@@ -67,4 +68,10 @@ private:
 	bool m_canDash = true;
 	bool m_isDashing = false;
 	void processDash(float cameraSpeed, bool fKeyPressed);
+
+	// Teleport
+	glm::vec3 m_teleportPos = m_cameraPos;
+	bool m_teleportSet = false;
+	double m_debounceKeyPress = 0.0;
+	void processTeleport(bool eKeyPressed);
 };

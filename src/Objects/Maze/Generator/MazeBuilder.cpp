@@ -3,7 +3,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <random>
+
+#include "../../../Util/RandomGenerator.h"
 
 
 // File meekrijg of niet (nullptr checken)
@@ -13,7 +14,7 @@ MazeBuilder::MazeBuilder(const char* mazeFile) : m_wallAmount{}, m_width{}, m_he
 		readLocations(mazeFile); // width, height, wallamount also in this function
 	else
 	{
-		int tileWidth = 10, tileHeight = 20;
+		int tileWidth = 8, tileHeight = 15;
 		m_generator->generateMaze(tileWidth, tileHeight);
 		m_wallOffsets = m_generator->getWallLocations();
 		m_wallAmount = m_wallOffsets.size();
@@ -66,17 +67,14 @@ int MazeBuilder::getWallAmount() const
 
 std::vector<glm::vec2> MazeBuilder::getRandomPositions(int quantity, const Walls& walls) const
 {
-	// https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
 	std::vector<glm::vec2> positions;
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> disWidth(0, getWidth() * walls.getWallSize().x);
-	std::uniform_real_distribution<> disHeight(0, getHeight() * walls.getWallSize().z);
+	float maxWidth{ getWidth() * walls.getWallSize().x };
+	float maxHeight{ getHeight() * walls.getWallSize().z };
 
 	while (quantity > 0)
 	{
-		glm::vec2 position{ disWidth(gen), disHeight(gen) };
+		glm::vec2 position{ RandomGenerator::randomFloat(0, maxWidth), RandomGenerator::randomFloat(0, maxHeight) };
 		if (!walls.isWallColision(position))
 		{
 			positions.push_back(position);

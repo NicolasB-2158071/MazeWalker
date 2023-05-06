@@ -48,6 +48,12 @@ void Renderer::drawSkybox(const VertexArray& vao, const Shader& shader, const Cu
 	glDepthFunc(GL_LESS);
 }
 
+void Renderer::drawMeteorites(Model& meteoriteModel, const Shader& shader, int amount)
+{
+	shader.use();
+	meteoriteModel.draw(shader, amount);
+}
+
 void Renderer::drawLights(Model& lightModel, const Shader& shader, int amount)
 {
 	shader.use();

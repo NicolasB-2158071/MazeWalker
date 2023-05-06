@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 
+#include <iostream>
+
 Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager) : m_lastX{ windowWidth / 2 }, m_lastY{ windowHeight / 2 }
 {
     m_projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.1f, 100.0f);
@@ -26,6 +28,7 @@ void Camera::processKeyboardMovement(Window::keyboardPresses presses, float delt
     
     processDash(cameraSpeed, presses.key_f_active);
     processJumping(presses.key_space_active);
+    processTeleport(presses.key_e_active);
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)
@@ -163,4 +166,23 @@ void Camera::processDash(float cameraSpeed, bool fKeyPressed)
 
     if (m_isDashing)
         m_cameraPos += 5 * cameraSpeed * m_cameraFront;
+}
+
+void Camera::processTeleport(bool eKeyPressed)
+{
+    double currentTime{ glfwGetTime() };
+    if (!eKeyPressed || currentTime - m_debounceKeyPress < 1.0)
+        return;
+
+    if (m_teleportSet)
+    {
+        m_cameraPos = m_teleportPos;
+        m_teleportSet = false;
+    }
+    else
+    {
+        m_teleportPos = m_cameraPos;
+        m_teleportSet = true;
+    }
+    m_debounceKeyPress = currentTime;
 }

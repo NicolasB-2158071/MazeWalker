@@ -57,7 +57,4 @@ private:
 
 	void handleRightClickPicking();
 	void handleLeftClickPicking();
-
-	// https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/
-	float randomFloat() const;
 };

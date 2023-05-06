@@ -4,8 +4,8 @@ Maze::Maze(EventManager* eventManager) : /*m_builder{"res/mazes/testMaze.txt"},*
 {
 	// Init objects based on wallsize, width and height
 	m_walls.initObject(m_builder.getWallAmount(), m_builder.getWallOffsets());
-	m_floor.initObject(m_builder.getWidth() * m_walls.getWallSize().x, m_builder.getHeight() * m_walls.getWallSize().z);
-	m_blackHole.initObject(m_builder.getWidth() * m_walls.getWallSize().x, m_builder.getHeight() * m_walls.getWallSize().z);
+	m_floor.initObject(getMazeWidth(), getMazeHeight());
+	m_blackHole.initObject(getMazeWidth(), getMazeHeight());
 	m_lights.setLocations(m_builder.getRandomPositions(Lights::NUMBER_OF_LIGHTS, m_walls));
 	m_masks.setLocations(m_builder.getRandomPositions(Masks::NUMBER_OF_MASKS, m_walls));
 
@@ -27,4 +27,14 @@ void Maze::draw(Renderer& renderer)
 bool Maze::isCollision(const glm::vec2& cameraPos) const
 {
 	return m_walls.isWallColision(cameraPos);
+}
+
+float Maze::getMazeWidth() const
+{
+	return m_builder.getWidth() * m_walls.getWallSize().x;
+}
+
+float Maze::getMazeHeight() const
+{
+	return m_builder.getHeight() * m_walls.getWallSize().z;
 }

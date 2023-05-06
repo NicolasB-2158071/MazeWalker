@@ -6,7 +6,7 @@
 
 #include "../../Camera/InteractionHandler.h"
 
-#include <random>
+#include "../../Util/RandomGenerator.h"
 
 Lights::Lights() : m_lightBuffer{ 80 * NUMBER_OF_LIGHTS, POINTLIGHT_BLOCK }, m_shader{ "src/Shaders/LightsVShader.vs", "src/Shaders/LightsFShader.fs" }
 {
@@ -52,9 +52,9 @@ void Lights::initPointLights()
 		PointLight pl{};
 		pl.position = glm::vec3{ m_locations[i].x, 0.5f, m_locations[i].y };
 		//pl.ambient = glm::vec3{ glm::vec3{ 0.8f /* + randomFloat() / 3*/, 0.8f /* + randomFloat() / 3*/, 0.8f /* + randomFloat() / 3*/}}; // Colour
-		pl.ambient = glm::vec3{  glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat() } }; // Colour
-		pl.diffuse = glm::vec3{ glm::vec3{ randomFloat(), randomFloat(), randomFloat() } };
-		pl.specular = glm::vec3{ glm::vec3{ randomFloat(), randomFloat(), randomFloat()} };
+		pl.ambient = glm::vec3{  glm::vec3{ 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f)}}; // Colour
+		pl.diffuse = glm::vec3{ glm::vec3{ RandomGenerator::randomFloat(0.0f, 1.0f), RandomGenerator::randomFloat(0.0f, 1.0f),RandomGenerator::randomFloat(0.0f, 1.0f) } };
+		pl.specular = glm::vec3{ glm::vec3{ RandomGenerator::randomFloat(0.0f, 1.0f), RandomGenerator::randomFloat(0.0f, 1.0f), RandomGenerator::randomFloat(0.0f, 1.0f)} };
 		pl.Kc = 1.0f;
 		pl.K1 = 0.09f;
 		pl.Kq = 0.032f;
@@ -143,15 +143,10 @@ void Lights::handleRightClickPicking()
 		glm::vec3 center{ location.x + 0.05f, 1.0f, location.y + 0.05f }; // lightSize = 1.0f
 		if (ih->isSphereRayCollisionFromCamera(ray, center, 0.1f, 8.0f))
 		{
-			m_lightColours[lightNumber] = glm::vec3{ 0.3 + randomFloat(), 0.3 + randomFloat(), 0.3 + randomFloat() };
+			m_lightColours[lightNumber] = glm::vec3{ 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f), 0.3 + RandomGenerator::randomFloat(0.0f, 1.0f) };
 			if (m_lightsOn[lightNumber])
 				setLightColour(lightNumber, m_lightColours[lightNumber]);
 		}
 		++lightNumber;
 	}
-}
-
-float Lights::randomFloat() const
-{
-	return (float)(rand()) / (float)(RAND_MAX);
 }
