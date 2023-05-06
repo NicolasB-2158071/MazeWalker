@@ -6,7 +6,6 @@ BlackHole::BlackHole() : m_shader{"src/Shaders/BlackHoleVSShader.vs", "src/Shade
 {
     m_shader.use();
     m_shader.bindUniformBlock("TransformationBlock", Renderer::TRANSFORMATION_BLOCK);
-    // initLighting
 }
 
 void BlackHole::draw(Renderer& renderer)
@@ -37,7 +36,6 @@ void BlackHole::initObject(float floorWidth, float floorHeight)
     
     initAudio();
 }
-
 
 void BlackHole::initAudio()
 {

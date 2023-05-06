@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../stb_image.h"
 
-Cubemap::Cubemap(const std::vector<std::string>& textures, unsigned int rgbType)
+Cubemap::Cubemap(const std::vector<std::string>& textures)
 {
 	glGenTextures(1, &m_cubemapID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_cubemapID);
@@ -14,7 +14,7 @@ Cubemap::Cubemap(const std::vector<std::string>& textures, unsigned int rgbType)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	for (int i = 0; i < textures.size(); ++i)
-		loadImage(textures[i].c_str(), rgbType, i);
+		loadImage(textures[i].c_str(), i);
 }
 
 Cubemap::~Cubemap()
@@ -33,14 +33,32 @@ void Cubemap::unbind() const
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void Cubemap::loadImage(const char* path, unsigned int rgbType, int pos)
+void Cubemap::loadImage(const char* path, int pos)
 {
 	stbi_set_flip_vertically_on_load(false);
 	int textureWidth, textureHeight, nrChannels;
 	unsigned char* data{ stbi_load(path, &textureWidth, &textureHeight, &nrChannels, 0) };
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + pos, 0, rgbType, textureWidth, textureHeight, 0, rgbType, GL_UNSIGNED_BYTE, data);
+		// From learnOpenGL.com model loading
+		GLenum format;
+		switch (nrChannels)
+		{
+		case 1:
+			format = GL_RED;
+			break;
+		case 3:
+			format = GL_RGB;
+			break;
+		case 4:
+			format = GL_RGBA;
+			break;
+		default:
+			format = GL_RGB;
+			break;
+		}
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + pos, 0, format, textureWidth, textureHeight, 0, format, GL_UNSIGNED_BYTE, data);
 	}
 	else
 	{

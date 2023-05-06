@@ -7,7 +7,7 @@
 class Cubemap
 {
 public:
-	Cubemap(const std::vector<std::string>& textures, unsigned int rgbType);
+	Cubemap(const std::vector<std::string>& textures);
 	~Cubemap();
 
 	void activeAndBind(unsigned int slot) const;
@@ -16,5 +16,5 @@ public:
 private:
 	unsigned int m_cubemapID;
 
-	void loadImage(const char* path, unsigned int rgbType, int pos);
+	void loadImage(const char* path, int pos);
 };

@@ -4,7 +4,7 @@
 #include "../../Buffers/VertexBufferLayout.h"
 #include "../../Buffers/IndexBuffer.h"
 
-Skybox::Skybox() : m_cubemap{ m_textures, GL_RGBA }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
+Skybox::Skybox() : m_cubemap{ m_textures }, m_shader{"src/Shaders/SkyboxVShader.vs", "src/Shaders/SkyboxFShader.fs"}
 {
     m_shader.use();
     m_shader.setInt("textureOne", 0);

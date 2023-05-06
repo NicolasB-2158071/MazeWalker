@@ -26,5 +26,4 @@ private:
 	sf::Music m_backgroundMusic;
 	void initAudio();
 	void handleLeftClickPicking();
-	// Geluid -> relative uit
 };

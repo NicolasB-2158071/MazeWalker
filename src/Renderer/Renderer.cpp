@@ -63,5 +63,7 @@ void Renderer::drawMasks(Model& maskModel, const Shader& shader, int amount)
 void Renderer::drawBlackHole(Model& blackHoleModel, const Shader& shader)
 {
 	shader.use();
+	shader.setFloat("time", glfwGetTime());
+
 	blackHoleModel.draw(shader, 1);
 }

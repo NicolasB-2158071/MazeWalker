@@ -1,6 +1,6 @@
 #include "Maze.h"
 
-Maze::Maze(EventManager* eventManager) : /*m_builder{"res/mazes/maze.txt"},*/ m_walls{glm::vec3{1.0f, 2.0f, 1.0f}}
+Maze::Maze(EventManager* eventManager) : /*m_builder{"res/mazes/testMaze.txt"},*/ m_walls{glm::vec3{1.0f, 2.0f, 1.0f}}
 {
 	// Init objects based on wallsize, width and height
 	m_walls.initObject(m_builder.getWallAmount(), m_builder.getWallOffsets());

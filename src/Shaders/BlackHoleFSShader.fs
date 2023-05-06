@@ -1,9 +1,10 @@
 #version 330 core
 out vec4 FragColor;
 
-in vec2 TexCoords;
+uniform float time;
 
 void main()
-{    
-    FragColor = vec4(0.0);
+{   
+	float colour = (sin(time) + 1.0) / 2;
+	FragColor = vec4(colour, colour, colour, 1.0);
 }
