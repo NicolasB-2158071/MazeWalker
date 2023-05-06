@@ -20,13 +20,11 @@ void Renderer::updateProjectionMatrix()
 
 void Renderer::drawFloor(const VertexArray& vao, const Shader& shader, const Texture& texture)
 {
-	glEnable(GL_BLEND);
 	shader.use();
 
 	texture.activeAndBind(GL_TEXTURE0);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glDisable(GL_BLEND);
 }
 
 // Eerst scaling dan translatie (omgekeerde volgorde in code!!)
@@ -60,4 +58,10 @@ void Renderer::drawMasks(Model& maskModel, const Shader& shader, int amount)
 {
 	shader.use();
 	maskModel.draw(shader, amount);
+}
+
+void Renderer::drawBlackHole(Model& blackHoleModel, const Shader& shader)
+{
+	shader.use();
+	blackHoleModel.draw(shader, 1);
 }

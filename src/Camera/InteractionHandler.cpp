@@ -12,6 +12,11 @@ InteractionHandler* InteractionHandler::getInstance()
     return self;
 }
 
+Camera& InteractionHandler::getCamera()
+{
+    return m_camera;
+}
+
 glm::vec3 InteractionHandler::calculateRayVector(double mouseXpos, double mouseYpos) const
 {
     // NDC + homogeneous clip coordinates

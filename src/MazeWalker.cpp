@@ -64,8 +64,8 @@ void MazeWalker::processKeyBoardMovement()
     if (m_focus)
     {
         m_camera.processKeyboardMovement(presses, m_deltaTime);
-        if (m_maze->isCollision(m_camera.getXZPosition()))
-            m_camera.rewindCamera();
+       /* if (m_maze->isCollision(m_camera.getXZPosition()))
+            m_camera.rewindCamera();*/
     }
 }
 

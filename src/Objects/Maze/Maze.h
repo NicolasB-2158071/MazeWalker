@@ -5,6 +5,7 @@
 #include "Walls.h"
 #include "Lights.h"
 #include "Masks.h"
+#include "BlackHole.h"
 
 class Maze
 {
@@ -16,11 +17,9 @@ public:
 
 private:
 	MazeBuilder m_builder;
-	Floor m_floor;
 	Walls m_walls;
+	Floor m_floor;
 	Lights m_lights;
 	Masks m_masks;
-
-	sf::Music m_backgroundMusic;
-	void initAudio();
+	BlackHole m_blackHole;
 };

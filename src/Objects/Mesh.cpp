@@ -33,7 +33,7 @@ void Mesh::draw(const Shader& shader, int instancingCount)
     }
 
     m_vao.bind();
-    if (instancingCount == 0)
+    if (instancingCount == 1)
         glDrawElements(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0);
     else
         glDrawElementsInstanced(GL_TRIANGLES, m_indicesSize, GL_UNSIGNED_INT, 0, instancingCount);

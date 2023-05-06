@@ -10,6 +10,9 @@ Camera::Camera(float windowWidth, float windowHeight, EventManager* eventManager
 
 void Camera::processKeyboardMovement(Window::keyboardPresses presses, float deltaTime)
 {
+    if (m_locked)
+        return;
+
     float cameraSpeed{ m_cameraSpeed * deltaTime };
     m_oldPos.x = m_cameraPos.x, m_oldPos.y = m_cameraPos.z;
     if (presses.key_w_active)
@@ -22,7 +25,7 @@ void Camera::processKeyboardMovement(Window::keyboardPresses presses, float delt
         m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) * cameraSpeed; // x waarde (één x coordinaat)
     
     processDash(cameraSpeed, presses.key_f_active);
-    processJumping(presses.key_space_active);
+    //processJumping(presses.key_space_active);
 }
 
 void Camera::processMouseMovement(double xpos, double ypos)
@@ -96,6 +99,12 @@ void Camera::setCameraSpeed(float cameraSpeed)
 void Camera::setMouseSpeed(float mouseSpeed)
 {
     m_mouseSpeed = mouseSpeed;
+}
+
+void Camera::setPositionLocked(const glm::vec3& position)
+{
+    m_cameraPos = position;
+    m_locked = true;
 }
 
 void Camera::newFocus()

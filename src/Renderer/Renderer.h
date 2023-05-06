@@ -27,6 +27,7 @@ public:
 
 	void drawLights(Model& lightModel, const Shader& shader, int amount);
 	void drawMasks(Model& maskModel, const Shader& shader, int amount);
+	void drawBlackHole(Model& blackHoleModel, const Shader& shader);
 
 private:
 	Camera& m_camera;

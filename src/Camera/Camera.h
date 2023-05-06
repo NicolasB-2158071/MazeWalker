@@ -26,6 +26,7 @@ public:
 
 	void setCameraSpeed(float cameraSpeed);
 	void setMouseSpeed(float mouseSpeed);
+	void setPositionLocked(const glm::vec3& position);
 
 	void newFocus(); // firstMouse
 
@@ -34,6 +35,7 @@ private:
 	glm::vec3 m_cameraPos = glm::vec3{ 0.1f, 0.5f, 0.1f };
 	glm::vec3 m_cameraFront = glm::vec3{ 0.0f, 0.0f, 1.0f };
 	glm::vec3 m_cameraUp = glm::vec3{ 0.0f, 1.0f, 0.0f }; // Switched camera looking to behind!!
+	bool m_locked = false;;
 
 	// Window parameters
 	glm::mat4 m_projectionMatrix;

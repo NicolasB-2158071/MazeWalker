@@ -19,6 +19,7 @@ void Walls::draw(Renderer& renderer)
     renderer.drawWalls(m_vao, m_shader, m_texture, m_amount);
 }
 
+// Vao clear
 void Walls::initObject(int amount, const std::vector<glm::vec2>& offsets)
 {
     m_amount = amount;

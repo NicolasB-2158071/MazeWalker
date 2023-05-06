@@ -13,7 +13,7 @@ MazeBuilder::MazeBuilder(const char* mazeFile) : m_wallAmount{}, m_width{}, m_he
 		readLocations(mazeFile); // width, height, wallamount also in this function
 	else
 	{
-		int tileWidth = 8, tileHeight = 12;
+		int tileWidth = 15, tileHeight = 20;
 		m_generator->generateMaze(tileWidth, tileHeight);
 		m_wallOffsets = m_generator->getWallLocations();
 		m_wallAmount = m_wallOffsets.size();

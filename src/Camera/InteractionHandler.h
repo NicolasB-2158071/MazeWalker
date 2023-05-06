@@ -9,6 +9,7 @@ public:
 
 	InteractionHandler(float windowWidth, float windowHeight, Camera& camera);
 	static InteractionHandler* getInstance();
+	Camera& getCamera();
 
 	// Heavily inspired by: https://antongerdelan.net/opengl/raycasting.html
 	glm::vec3 calculateRayVector(double mouseXpos, double mouseYpos) const;
