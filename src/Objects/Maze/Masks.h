@@ -18,7 +18,7 @@ public:
 
 	void initMasksInput(EventManager* eventManager);
 
-	const static unsigned int NUMBER_OF_MASKS = 5;
+	const static unsigned int NUMBER_OF_MASKS = 8;
 
 private:
 	Model m_maskModel;

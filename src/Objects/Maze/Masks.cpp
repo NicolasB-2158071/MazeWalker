@@ -81,7 +81,7 @@ void Masks::handleLeftClickPicking()
     for (auto& location : m_locations)
     {
         glm::vec3 center{ location.x + 0.01f, 0.0f, location.y + 0.01f };
-        if (ih->isSphereRayCollisionFromCamera(ray, center, 0.3f, 8.0f))
+        if (ih->isSphereRayCollisionFromCamera(ray, center, 0.5f, 8.0f))
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             m_startTimeSeeThrough = glfwGetTime();
