@@ -19,5 +19,6 @@
 /res/Models/*
 /res/Audio/*
 
+MazeWalker.mp4
 glad.c
 stb_image.*

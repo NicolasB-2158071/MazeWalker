@@ -31,5 +31,5 @@ private:
 	glm::mat4 calculateModel(int xOffset, int zOffset) const;
 	std::vector<glm::mat3> calculateNormalModels(const std::vector<glm::mat4>& locations) const;
 
-	const float OFFSET = 0.05f;
+	const float OFFSET = 0.1f;
 };
