@@ -60,7 +60,8 @@ void BlackHole::handleLeftClickPicking()
     if (ih->isSphereRayCollisionFromCamera(ray, center, 0.2f, 8.0f))
     {
         glm::vec3 newPosition{ m_floorWidth / 2, 50.0f, m_floorHeight / 2 };
-        m_backgroundMusic.setPosition(newPosition.x, newPosition.y, newPosition.z);
+        m_backgroundMusic.setRelativeToListener(true); // No attentuation
+        m_backgroundMusic.setPosition(0.0f, 0.0f, 0.0f);
         ih->getCamera().setPositionLocked(newPosition);
     }
 }
